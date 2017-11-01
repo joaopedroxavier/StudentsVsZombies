@@ -20,6 +20,8 @@ public class Game implements Runnable {
     private Grid grid;
     private GameObject holding;
     private Point click;
+    private Breed zombie_breed;
+    private Breed plant_breed;
 
 
     private int WIDTH = 800, HEIGHT = 600;
@@ -98,17 +100,15 @@ public class Game implements Runnable {
         p_folders.add("plant/standing/");
         p_folders.add("plant/shooting/");
         p_folders.add("plant/dying/");
-        Breed zombie_breed = new Breed(100, 10, z_folders, new WalkerPhysics(), new WalkerIA(), new Walking());
-        Breed plant_breed = new Breed(100, 10, p_folders, new PlantPhysics(), new PlantIA(), new Standing());
+        zombie_breed = new Breed(100, 10, z_folders, new WalkerPhysics(), new WalkerIA(), new Walking());
+        plant_breed = new Breed(100, 10, p_folders, new PlantPhysics(), new PlantIA(), new Standing());
 
         objects.add(zombie_breed.spawn(grid.get_loc(new Point(grid.get_limit().x, 3)), grid));
-        System.out.println(objects.get(0).x_);
-        System.out.println(objects.get(0).y_);
-
 
     }
 
     private void update(){
+        bufferStrategy.getDrawGraphics().clearRect(0, 0, WIDTH, HEIGHT);
         for(GameObject obj : objects){ obj.py.update(obj); obj.gr.update(obj, this); }
     }
 
