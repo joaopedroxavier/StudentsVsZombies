@@ -19,7 +19,6 @@ public abstract class Graphics {
         Graphics2D g = (Graphics2D) game.bufferStrategy.getDrawGraphics();
         g.drawImage(img, x, y, game.panel);
         g.dispose();
-        game.bufferStrategy.show();
     }
 
 

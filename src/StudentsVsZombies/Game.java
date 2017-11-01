@@ -91,7 +91,7 @@ public class Game implements Runnable {
     }
 
     private void construct_world(){
-        grid = new Grid(0, 0, 20, 5, 9);
+        grid = new Grid(0, 0, 80, 5, 9);
         objects = new ArrayList<GameObject>();
         ArrayList<String> z_folders = new ArrayList<>(), p_folders = new ArrayList<>();
         z_folders.add("zombie/walking/");
@@ -103,13 +103,18 @@ public class Game implements Runnable {
         zombie_breed = new Breed(100, 10, z_folders, new WalkerPhysics(), new WalkerIA(), new Walking());
         plant_breed = new Breed(100, 10, p_folders, new PlantPhysics(), new PlantIA(), new Standing());
 
-        objects.add(zombie_breed.spawn(grid.get_loc(new Point(grid.get_limit().x, 3)), grid));
+        objects.add(zombie_breed.spawn(new Point(grid.get_limit().x, 1), grid));
+        objects.add(zombie_breed.spawn(new Point(grid.get_limit().x, 2), grid));
+        objects.add(zombie_breed.spawn(new Point(grid.get_limit().x, 3), grid));
+        objects.add(zombie_breed.spawn(new Point(grid.get_limit().x, 4), grid));
+        objects.add(zombie_breed.spawn(new Point(grid.get_limit().x, 5), grid));
 
     }
 
     private void update(){
         bufferStrategy.getDrawGraphics().clearRect(0, 0, WIDTH, HEIGHT);
         for(GameObject obj : objects){ obj.py.update(obj); obj.gr.update(obj, this); }
+        bufferStrategy.show();
     }
 
     public Point get_size(){return new Point(WIDTH, HEIGHT);}

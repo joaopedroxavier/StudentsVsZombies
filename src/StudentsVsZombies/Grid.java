@@ -32,7 +32,9 @@ public class Grid {
     Point get_limit() { return new Point(M - 1, N - 1); }
     int get_size() { return cell_size; }
     void remove(GameObject obj, Point cell){ grid[cell.x][cell.y].remove(obj); }
-    void add(GameObject obj, Point cell){ /*grid[cell.x][cell.y].add(obj);*/ }
+    void add(GameObject obj, Point cell){
+        /*grid[cell.x][cell.y].add(obj);*/
+    }
     //Cell get_inCell(Point cell) { return grid[cell.x][cell.y]; }
 
 
