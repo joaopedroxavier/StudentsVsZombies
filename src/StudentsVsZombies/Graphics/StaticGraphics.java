@@ -1,10 +1,11 @@
 package StudentsVsZombies.Graphics;
 
+import StudentsVsZombies.Game;
 import StudentsVsZombies.GameObject;
 
-import java.awt.*;
+import java.awt.image.BufferedImage;
 
 public class StaticGraphics extends Graphics {
-    private Image sprite;
-    void update(GameObject obj){}
+    private BufferedImage sprite;
+    public void update(GameObject obj, Game game){}
 }
