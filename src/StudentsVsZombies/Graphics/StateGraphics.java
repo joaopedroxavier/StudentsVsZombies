@@ -21,6 +21,8 @@ public class StateGraphics extends Graphics {
 
     public StateGraphics(ArrayList<BufferedImage> sprite_seq) { this.sprite_seq = sprite_seq; }
 
+    public void generateEnergy(){ }
+
     public StateGraphics copy(){
         return new StateGraphics(this.sprite_seq);
     }
