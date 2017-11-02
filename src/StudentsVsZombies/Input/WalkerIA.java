@@ -18,13 +18,15 @@ public class WalkerIA extends Input {
     }
 
     public void update(GameObject obj, Boolean clicked) {
+        State currentState = ((Spawnable) obj).state;
+
         if( ((Spawnable)obj).hp <= 0 ) {
-            ((Spawnable)obj).state.die();
+            currentState.die();
         }
         Cell cell = obj.getListOfObjects();
         for(Spawnable other : cell) {
-            if(other.getBreed() == game.plant_breed && ((Spawnable)obj).state instanceof Walking) {
-                    ((Spawnable)obj).state.change();
+            if(other.getBreed() == game.plant_breed && currentState instanceof Walking) {
+                    currentState.change();
             }
         }
     }

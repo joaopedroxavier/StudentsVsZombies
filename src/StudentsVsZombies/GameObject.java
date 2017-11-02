@@ -26,6 +26,11 @@ public class GameObject {
 
     public Point getCell () { return grid_.get_cell(new Point(x_, y_)); }
 
+    public Point getCell (Point p) { return grid_.get_cell(p); }
+
+    public Point getLimits() { return grid_.get_limit(); }
+
     public Cell getListOfObjects() { return grid_.getListOfObjects(getCell()); }
 
+    public Cell getListOfObjects(Point p) { return grid_.getListOfObjects(p); }
 }
