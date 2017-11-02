@@ -9,6 +9,7 @@ import javax.imageio.ImageIO;
 import java.awt.*;
 import java.awt.image.BufferedImage;
 import java.io.File;
+import java.io.IOException;
 import java.util.ArrayList;
 
 public class Breed {
@@ -18,23 +19,25 @@ public class Breed {
     private Physics py;
     private Input in;
     private State base_state;
-    ArrayList<ArrayList<BufferedImage>> sprites; //A sequence of sprites for each state
-                                           //Directories should be like gtx/zombie/eating/103.png
-
-    Breed(int total_hp, int attack, ArrayList<String> sprite_folders, Physics py, Input in, State base_state){
+    ArrayList <ArrayList<BufferedImage>> sprites;
+    /** @param spritesheet_path Path to the image which has the sequence of pictures of an animation. **/
+    Breed(int total_hp, int attack, String spritesheet_path, Physics py, Input in, State base_state){
         this.py = py; this.in = in; this.base_state = base_state;
         this.totalHp = total_hp;
         this.attack = attack;
-        sprites = new ArrayList<>();
-        for(String s : sprite_folders) {
-            ArrayList<BufferedImage> spr = new ArrayList<>();
-            for(int i = 0; ;i++){
-                File file = new File("gfx/" + s + i + ".png");
-                if(!file.exists()) break;
-                try{spr.add(ImageIO.read(file));}catch(Exception e){};
-            }
-            sprites.add(spr);
-        }
+		try {
+			sprites = new ArrayList<>();
+	        ArrayList<BufferedImage> spr = new ArrayList<>();
+	        File file = new File(spritesheet_path);
+			BufferedImage img = ImageIO.read(file);
+			for (int i = 0 ; i < 4 ; ++i) {
+				spr.add((img.getSubimage(i*16, 0, 16, 16)));
+			}
+	        sprites.add(spr);
+		}
+		catch (IOException e) {
+				e.printStackTrace();
+		}
     }
 
     Spawnable spawn(Point cell, Grid grid){

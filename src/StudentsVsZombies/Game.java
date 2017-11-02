@@ -94,14 +94,14 @@ public class Game implements Runnable {
         grid = new Grid(0, 0, 80, 5, 9);
         objects = new ArrayList<GameObject>();
         ArrayList<String> z_folders = new ArrayList<>(), p_folders = new ArrayList<>();
-        z_folders.add("zombie/walking/");
-        z_folders.add("zombie/eating/");
-        z_folders.add("zombie/dying/");
-        p_folders.add("plant/standing/");
-        p_folders.add("plant/shooting/");
-        p_folders.add("plant/dying/");
-        zombie_breed = new Breed(100, 10, z_folders, new WalkerPhysics(), new WalkerIA(), new Walking());
-        plant_breed = new Breed(100, 10, p_folders, new PlantPhysics(), new PlantIA(), new Standing());
+        //z_folders.add("zombie/walking/");
+        //z_folders.add("zombie/eating/");
+        //z_folders.add("zombie/dying/");
+        //p_folders.add("plant/standing/");
+        //p_folders.add("plant/shooting/");
+        //p_folders.add("plant/dying/");
+        zombie_breed = new Breed(100, 10, "gfx/sheets/plant.png", new WalkerPhysics(), new WalkerIA(), new Walking());
+        //plant_breed = new Breed(100, 10, p_folders, new PlantPhysics(), new PlantIA(), new Standing());
 
         objects.add(zombie_breed.spawn(new Point(grid.get_limit().x, 1), grid));
         objects.add(zombie_breed.spawn(new Point(grid.get_limit().x, 2), grid));
