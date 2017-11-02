@@ -29,6 +29,7 @@ public class Game implements Runnable {
     private Point click;
     public Breed zombie_breed;
     public Breed plant_breed;
+    public Breed sunflower_breed;
     private GameObject energyPrototype;
     private GameObject bulletPrototype;
 
@@ -101,7 +102,7 @@ public class Game implements Runnable {
     }
 
     private void construct_world(){
-        grid = new Grid(0, 0, 16*scale, 5, 9);
+        grid = new Grid(-30, 85, 16*scale, 9, 5);
         objects = new ArrayList<>();
         File file = new File("gfx/sheets/backgroundx4.png");
 		try {
@@ -113,17 +114,13 @@ public class Game implements Runnable {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
-        zombie_breed = new Breed(100, 10, "gfx/sheets/plantx4.png", scale, new WalkerPhysics(), new EnergyGeneratorIA(this), new Walking());
-        plant_breed = new Breed(100, 10,"gfx/sheets/sunflowerx4.png", scale, new PlantPhysics(), new PlantIA(this), new Standing());
+        plant_breed = new Breed(100, 10, "gfx/sheets/plantx4.png", scale, new PlantPhysics(), new PlantIA(this), new Standing());
+        sunflower_breed = new Breed(100, 10,"gfx/sheets/sunflowerx4.png", scale, new PlantPhysics(), new PlantIA(this), new Standing());
 
-
-        objects.add(zombie_breed.spawn(new Point(grid.get_limit().y, 1), grid));
-        objects.add(zombie_breed.spawn(new Point(grid.get_limit().y, 2), grid));
-        objects.add(zombie_breed.spawn(new Point(grid.get_limit().y, 3), grid));
-        objects.add(zombie_breed.spawn(new Point(grid.get_limit().y, 4), grid));
-        objects.add(zombie_breed.spawn(new Point(grid.get_limit().y, 5), grid));
-        for (int i = 0 ; i < 5 ; ++i)
-        objects.add(plant_breed.spawn(new Point(0, 1+i), grid));
+        for (int i = 0 ; i < 5 ; ++i) {
+            objects.add(plant_breed.spawn(new Point(1, i), grid));
+            objects.add(sunflower_breed.spawn(new Point(0, i), grid));
+        }
     }
 
     public void generateEnergy() {

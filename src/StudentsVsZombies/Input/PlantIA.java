@@ -30,8 +30,8 @@ public class PlantIA extends Input {
         Point myCell = obj.getCell();
         int zombiesInRow = 0;
 
-        for(int j=myCell.y; j<=limits.y; j++) {
-            Point point = new Point(myCell.x, j);
+        for(int i=myCell.x; i<limits.x; i++) {
+            Point point = new Point(i, myCell.y);
             Cell cell = obj.getListOfObjects(point);
             for(Spawnable other : cell) {
                 if(other.getBreed() == game.zombie_breed && currentState instanceof Standing) {
