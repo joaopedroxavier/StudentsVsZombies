@@ -5,4 +5,5 @@ public class Walking extends State {
         System.out.println("Om nom nom");
     }
     public void die(){}
+    public State copy(){return new Walking();}
 }

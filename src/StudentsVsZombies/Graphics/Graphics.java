@@ -15,6 +15,8 @@ public abstract class Graphics {
     public Graphics(Graphics gr){}
     public Graphics(){}
 
+    abstract public Graphics copy();
+
     protected void displayImage(Game game, BufferedImage img, int x, int y) { //prototype
         Graphics2D g = (Graphics2D) game.bufferStrategy.getDrawGraphics();
         g.drawImage(img, x, y, game.panel);

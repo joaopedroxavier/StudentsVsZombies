@@ -23,6 +23,10 @@ public class Game implements Runnable {
     private Point click;
     public Breed zombie_breed;
     public Breed plant_breed;
+    private GameObject energyPrototype;
+    private GameObject bulletPrototype;
+    private GameObject background;
+    private GameObject progressBar;
 
 
     private int WIDTH = 800, HEIGHT = 600;
@@ -95,14 +99,10 @@ public class Game implements Runnable {
         grid = new Grid(0, 0, 80, 5, 9);
         objects = new ArrayList<>();
         ArrayList<String> z_folders = new ArrayList<>(), p_folders = new ArrayList<>();
-        //z_folders.add("zombie/walking/");
-        //z_folders.add("zombie/eating/");
-        //z_folders.add("zombie/dying/");
-        //p_folders.add("plant/standing/");
-        //p_folders.add("plant/shooting/");
-        //p_folders.add("plant/dying/");
         zombie_breed = new Breed(100, 10, "gfx/sheets/plant.png", new WalkerPhysics(), new EnergyGeneratorIA(this), new Walking());
-        //plant_breed = new Breed(100, 10, p_folders, new PlantPhysics(), new PlantIA(), new Standing());
+        plant_breed = new Breed(100, 10," gfx/sheets/plant.png", new PlantPhysics(), new PlantIA(this), new Standing());
+        energyPrototype = new GameObject(0, 0, );
+
 
         objects.add(zombie_breed.spawn(new Point(grid.get_limit().x, 1), grid));
         objects.add(zombie_breed.spawn(new Point(grid.get_limit().x, 2), grid));
