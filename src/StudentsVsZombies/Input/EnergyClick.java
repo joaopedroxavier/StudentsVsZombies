@@ -3,5 +3,6 @@ package StudentsVsZombies.Input;
 import StudentsVsZombies.GameObject;
 
 public class EnergyClick extends Input {
-    void update(GameObject obj, Boolean clicked){};
+    public void update(GameObject obj, Boolean clicked){}
+    public Input copy() { return null; }
 }
