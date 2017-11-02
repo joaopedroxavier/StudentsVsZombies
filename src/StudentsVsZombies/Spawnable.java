@@ -14,7 +14,7 @@ public class Spawnable extends GameObject {
     private Breed breed;
     protected Grid grid_;
 
-    Spawnable(Grid grid, Point pos, Graphics gr, Physics py, Input in, int width, int height, State state, int hp, Breed breed)
+    public Spawnable(Grid grid, Point pos, Graphics gr, Physics py, Input in, int width, int height, State state, int hp, Breed breed)
     {
         super(pos, gr, py, in , width, height);
         this.hp = hp; this.state = state; this.breed = breed;

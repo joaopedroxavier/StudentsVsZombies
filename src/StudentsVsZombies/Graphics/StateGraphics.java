@@ -12,7 +12,7 @@ public class StateGraphics extends Graphics {
 
     public void update(GameObject obj, Game game){
         update_counter++;
-        if(update_counter == 1/update_speed){
+        if(update_counter == (int)(1/update_speed)){
             sprite_i = (sprite_i + 1)%sprite_seq.size();
             displayImage(game,sprite_seq.get(sprite_i), obj.x_, obj.y_);
             update_counter = 0;
