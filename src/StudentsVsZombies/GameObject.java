@@ -14,12 +14,18 @@ public class GameObject {
     public Physics py;
     public Input in;
 
-    public GameObject(Grid grid, Point pos, Graphics gr, Physics py, Input in, int width, int height){
-        grid_ = grid;
+    public GameObject(Point pos, Graphics gr, Physics py, Input in, int width, int height){
         x_ = pos.x; y_ = pos.y;
         this.width = width; this.height = height;
         this.gr = gr; this.py = py; this.in = in;
-        grid_.add(this, grid_.get_cell(pos));
+    }
+
+    public GameObject(GameObject obj){
+        grid_ = obj.grid_;
+        gr = obj.gr; py = obj.py; in = obj.in;
+        x_ = obj.x_; y_ = obj.y_;
+        width = obj.width; height = obj.height;
+        grid_.add(this, grid_.get_cell(new Point(x_, y_)));
     }
 
     public void update(){}
