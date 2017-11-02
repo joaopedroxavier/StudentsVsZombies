@@ -114,7 +114,7 @@ public class Game implements Runnable {
 			e.printStackTrace();
 		}
         zombie_breed = new Breed(100, 10, "gfx/sheets/plant.png", new WalkerPhysics(), new EnergyGeneratorIA(this), new Walking());
-        plant_breed = new Breed(100, 10," gfx/sheets/plant.png", new PlantPhysics(), new PlantIA(this), new Standing());
+        plant_breed = new Breed(100, 10,"gfx/sheets/sunflower.png", new PlantPhysics(), new PlantIA(this), new Standing());
 
 
         objects.add(zombie_breed.spawn(new Point(grid.get_limit().x, 1), grid));
@@ -122,6 +122,8 @@ public class Game implements Runnable {
         objects.add(zombie_breed.spawn(new Point(grid.get_limit().x, 3), grid));
         objects.add(zombie_breed.spawn(new Point(grid.get_limit().x, 4), grid));
         objects.add(zombie_breed.spawn(new Point(grid.get_limit().x, 5), grid));
+        for (int i = 0 ; i < 5 ; ++i)
+        objects.add(plant_breed.spawn(new Point(0, 1+i), grid));
     }
 
     public void generateEnergy() {
