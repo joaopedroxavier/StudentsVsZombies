@@ -10,7 +10,7 @@ import java.io.File;
 
 public abstract class Graphics {
     abstract public void update(GameObject obj, Game game);
-    protected double update_speed = 0.3; // Change to time, getting time as parameter in update
+    protected double update_speed = 0.05; // Change to time, getting time as parameter in update
     protected int update_counter = 0;
     public Graphics(Graphics gr){}
     public Graphics(){}

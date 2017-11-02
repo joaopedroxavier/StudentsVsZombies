@@ -33,6 +33,7 @@ public class Game implements Runnable {
     private GameObject bulletPrototype;
 
 
+    private int scale = 4;
     private int WIDTH = 144, HEIGHT = 112;
     private boolean running = true;
     private long desiredFPS = 60;
@@ -46,11 +47,11 @@ public class Game implements Runnable {
         frame = new JFrame("Basic Game");
 
         panel = (JPanel) frame.getContentPane();
-        panel.setPreferredSize(new Dimension(WIDTH, HEIGHT));
+        panel.setPreferredSize(new Dimension(WIDTH*scale, HEIGHT*scale));
         panel.setLayout(null);
 
         canvas = new Canvas();
-        canvas.setBounds(0, 0, WIDTH, HEIGHT);
+        canvas.setBounds(0, 0, WIDTH*scale, HEIGHT*scale);
         canvas.setIgnoreRepaint(true);
 
         panel.add(canvas);
@@ -100,20 +101,20 @@ public class Game implements Runnable {
     }
 
     private void construct_world(){
-        grid = new Grid(0, 0, 16, 5, 9);
+        grid = new Grid(0, 0, 16*scale, 5, 9);
         objects = new ArrayList<>();
-        File file = new File("gfx/sheets/background.png");
+        File file = new File("gfx/sheets/backgroundx4.png");
 		try {
 			BufferedImage img = ImageIO.read(file);
 	        StaticGraphics background = new StaticGraphics(img);
-	        GameObject bg = new GameObject(new Point(0,0), background, new PlantPhysics(), new Idle(), 112,144);
+	        GameObject bg = new GameObject(new Point(0,0), background, new PlantPhysics(), new Idle(), 112*scale,144*scale);
 	        objects.add(bg);
 		} catch (IOException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
-        zombie_breed = new Breed(100, 10, "gfx/sheets/plant.png", new WalkerPhysics(), new EnergyGeneratorIA(this), new Walking());
-        plant_breed = new Breed(100, 10,"gfx/sheets/sunflower.png", new PlantPhysics(), new PlantIA(this), new Standing());
+        zombie_breed = new Breed(100, 10, "gfx/sheets/plantx4.png", scale, new WalkerPhysics(), new EnergyGeneratorIA(this), new Walking());
+        plant_breed = new Breed(100, 10,"gfx/sheets/sunflowerx4.png", scale, new PlantPhysics(), new PlantIA(this), new Standing());
 
 
         objects.add(zombie_breed.spawn(new Point(grid.get_limit().y, 1), grid));
