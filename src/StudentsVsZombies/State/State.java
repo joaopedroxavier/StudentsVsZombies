@@ -1,7 +1,7 @@
 package StudentsVsZombies.State;
 
 public abstract class State {
-    abstract void change();
-    abstract void die();
+    abstract public void change();
+    abstract public void die();
     public State copy(){ return null; }
 }

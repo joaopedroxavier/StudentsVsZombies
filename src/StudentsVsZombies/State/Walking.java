@@ -1,6 +1,6 @@
 package StudentsVsZombies.State;
 
 public class Walking extends State {
-    void change(){};
-    void die(){};
+    public void change(){}
+    public void die(){}
 }
