@@ -21,7 +21,11 @@ public class GameObject {
         this.gr = gr; this.py = py; this.in = in;
         grid_.add(this, grid_.get_cell(pos));
     }
-    void update(){};
 
+    public void update(){}
+
+    public Point getCell () { return grid_.get_cell(new Point(x_, y_)); }
+
+    public Cell getListOfObjects() { return grid_.getListOfObjects(getCell()); }
 
 }

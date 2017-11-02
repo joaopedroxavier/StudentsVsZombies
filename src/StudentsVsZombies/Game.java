@@ -1,5 +1,6 @@
 package StudentsVsZombies;
 
+import StudentsVsZombies.Input.EnergyGeneratorIA;
 import StudentsVsZombies.Input.PlantIA;
 import StudentsVsZombies.Input.WalkerIA;
 import StudentsVsZombies.Physics.PlantPhysics;
@@ -20,8 +21,8 @@ public class Game implements Runnable {
     private Grid grid;
     private GameObject holding;
     private Point click;
-    private Breed zombie_breed;
-    private Breed plant_breed;
+    public Breed zombie_breed;
+    public Breed plant_breed;
 
 
     private int WIDTH = 800, HEIGHT = 600;
@@ -92,7 +93,7 @@ public class Game implements Runnable {
 
     private void construct_world(){
         grid = new Grid(0, 0, 80, 5, 9);
-        objects = new ArrayList<GameObject>();
+        objects = new ArrayList<>();
         ArrayList<String> z_folders = new ArrayList<>(), p_folders = new ArrayList<>();
         //z_folders.add("zombie/walking/");
         //z_folders.add("zombie/eating/");
@@ -100,7 +101,7 @@ public class Game implements Runnable {
         //p_folders.add("plant/standing/");
         //p_folders.add("plant/shooting/");
         //p_folders.add("plant/dying/");
-        zombie_breed = new Breed(100, 10, "gfx/sheets/plant.png", new WalkerPhysics(), new WalkerIA(), new Walking());
+        zombie_breed = new Breed(100, 10, "gfx/sheets/plant.png", new WalkerPhysics(), new EnergyGeneratorIA(this), new Walking());
         //plant_breed = new Breed(100, 10, p_folders, new PlantPhysics(), new PlantIA(), new Standing());
 
         objects.add(zombie_breed.spawn(new Point(grid.get_limit().x, 1), grid));
@@ -108,12 +109,15 @@ public class Game implements Runnable {
         objects.add(zombie_breed.spawn(new Point(grid.get_limit().x, 3), grid));
         objects.add(zombie_breed.spawn(new Point(grid.get_limit().x, 4), grid));
         objects.add(zombie_breed.spawn(new Point(grid.get_limit().x, 5), grid));
+    }
 
+    public void generateEnergy() {
+        System.out.println("Gerou. Top.");
     }
 
     private void update(){
         bufferStrategy.getDrawGraphics().clearRect(0, 0, WIDTH, HEIGHT);
-        for(GameObject obj : objects){ obj.py.update(obj); obj.gr.update(obj, this); }
+        for(GameObject obj : objects){ obj.py.update(obj); obj.gr.update(obj, this); obj.in.update(obj, true); }
         bufferStrategy.show();
     }
 
