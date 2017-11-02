@@ -29,7 +29,7 @@ public class Grid {
                 (int)(y_ + cell_size*(0.5 + cell.y)));
     }
 
-    public Point get_limit() { return new Point(M - 1, N - 1); }
+    public Point get_limit() { return new Point( N - 1, M - 1); }
 
     public Cell getListOfObjects(Point cell) { return grid[cell.x][cell.y]; }
 

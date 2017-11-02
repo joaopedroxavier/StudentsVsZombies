@@ -103,7 +103,6 @@ public class Game implements Runnable {
         grid = new Grid(0, 0, 16, 5, 9);
         objects = new ArrayList<>();
         File file = new File("gfx/sheets/background.png");
-		;
 		try {
 			BufferedImage img = ImageIO.read(file);
 	        StaticGraphics background = new StaticGraphics(img);
@@ -117,11 +116,11 @@ public class Game implements Runnable {
         plant_breed = new Breed(100, 10,"gfx/sheets/sunflower.png", new PlantPhysics(), new PlantIA(this), new Standing());
 
 
-        objects.add(zombie_breed.spawn(new Point(grid.get_limit().x, 1), grid));
-        objects.add(zombie_breed.spawn(new Point(grid.get_limit().x, 2), grid));
-        objects.add(zombie_breed.spawn(new Point(grid.get_limit().x, 3), grid));
-        objects.add(zombie_breed.spawn(new Point(grid.get_limit().x, 4), grid));
-        objects.add(zombie_breed.spawn(new Point(grid.get_limit().x, 5), grid));
+        objects.add(zombie_breed.spawn(new Point(grid.get_limit().y, 1), grid));
+        objects.add(zombie_breed.spawn(new Point(grid.get_limit().y, 2), grid));
+        objects.add(zombie_breed.spawn(new Point(grid.get_limit().y, 3), grid));
+        objects.add(zombie_breed.spawn(new Point(grid.get_limit().y, 4), grid));
+        objects.add(zombie_breed.spawn(new Point(grid.get_limit().y, 5), grid));
         for (int i = 0 ; i < 5 ; ++i)
         objects.add(plant_breed.spawn(new Point(0, 1+i), grid));
     }

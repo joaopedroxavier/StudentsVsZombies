@@ -20,12 +20,11 @@ public class PlantIA extends Input {
         this.game = game;
     }
 
-    public void update(GameObject obj, Boolean clicked) {
-        State currentState = ((Spawnable) obj).state;
+    public void update(GameObject o, Boolean clicked) {
+        Spawnable obj = (Spawnable) o;
+        State currentState = obj.state;
 
-        if( ((Spawnable)obj).hp <= 0 ) {
-            currentState.die();
-        }
+        if (obj.hp <= 0) { currentState.die(); }
 
         Point limits = obj.getLimits();
         Point myCell = obj.getCell();
