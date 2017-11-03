@@ -12,7 +12,7 @@ public class Idle extends Input {
 
 	@Override
 	public Input copy() {
-		return null;
+		return new Idle();
 	}
 
 }

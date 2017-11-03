@@ -23,12 +23,12 @@ public class GameObject {
         this.in = in;
     }
 
-    public GameObject(GameObject obj) {
-        gr = obj.gr;
-        py = obj.py;
-        in = obj.in;
-        x_ = obj.x_;
-        y_ = obj.y_;
+    public GameObject(GameObject obj, Point pnt) {
+        gr = obj.gr.copy();
+        py = obj.py.copy();
+        in = obj.in.copy();
+        x_ = pnt.x;
+        y_ = pnt.y;
         width = obj.width;
         height = obj.height;
     }
