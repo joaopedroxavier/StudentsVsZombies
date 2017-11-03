@@ -114,7 +114,7 @@ public class Game implements Runnable {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
-        plant_breed = new Breed(100, 10, "gfx/sheets/plantx4.png", scale, new PlantPhysics(), new PlantIA(this), new Standing());
+        plant_breed = new Breed(100, 10, "gfx/sheets/plant-greenx4.png", scale, new PlantPhysics(), new PlantIA(this), new Standing());
         sunflower_breed = new Breed(100, 10,"gfx/sheets/sunflowerx4.png", scale, new PlantPhysics(), new PlantIA(this), new Standing());
 
         for (int i = 0 ; i < 5 ; ++i) {
