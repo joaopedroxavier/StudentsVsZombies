@@ -7,6 +7,7 @@ import StudentsVsZombies.Physics.PlantPhysics;
 import StudentsVsZombies.Physics.WalkerPhysics;
 import StudentsVsZombies.State.Standing;
 import StudentsVsZombies.State.Walking;
+import StudentsVsZombies.Graphics.StateGraphics;
 import StudentsVsZombies.Graphics.StaticGraphics;
 
 import javax.imageio.ImageIO;
@@ -120,17 +121,33 @@ public class Game implements Runnable {
 	        StaticGraphics background = new StaticGraphics(img);
 	        GameObject bg = new GameObject(new Point(0,0), background, new PlantPhysics(), new Idle(), 112*scale,144*scale);
 	        objects.add(bg);
-            bulletPrototype = new Prototype(new StaticGraphics(img), new BulletPhysics(), new Idle(), 10, 10); // colocar imagem da bullet x
-            energyPrototype = new Prototype(new StaticGraphics(img), new EnergyPhysics(), new EnergyGeneratorIA(this), 10, 10); // Colocar animacao da energia
+	        BufferedImage bullet = ImageIO.read(new File("gfx/sheets/green-bulletx"+scale+".png"));
+	        BufferedImage sunsheet = ImageIO.read(new File("gfx/sheets/sunx"+scale+".png"));
+            bulletPrototype = new Prototype(new StaticGraphics(bullet), new BulletPhysics(), new Idle(), 10, 10); // colocar imagem da bullet x
+            // TODO change StaticGraphics to StateGraphics(sunsheet,scale);
+            energyPrototype = new Prototype(new StaticGraphics(sunsheet.getSubimage(0, 0, 16*scale, 16*scale)), new EnergyPhysics(), new EnergyGeneratorIA(this), 10, 10); // Colocar animacao da energia
 		} catch (IOException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
-        green_breed = new Breed(100, 10, "gfx/sheets/plant-greenx" + scale +".png", scale, new PlantPhysics(), new PlantIA(this), new Standing());
-        blue_breed = new Breed(100, 10, "gfx/sheets/plant-icex"+scale+".png", scale, new PlantPhysics(), new PlantIA(this), new Standing());
+		
+		// build list of animation sheets relative to the entities
+		ArrayList<String> greens = new ArrayList<>();
+		ArrayList<String> blues = new ArrayList<>();
+		ArrayList<String> sun = new ArrayList<>();
+		ArrayList<String> sunflower = new ArrayList<>();
+		greens.add("gfx/sheets/plant-greenx" + scale +".png");
+		greens.add("gfx/sheets/plant-green-shootingx" + scale +".png");
+		blues.add("gfx/sheets/plant-bluex" + scale +".png");
+		blues.add("gfx/sheets/plant-blue-shootingx" + scale +".png");
+		sun.add("gfx/sheets/sunx"+scale+".png");
+		sunflower.add("gfx/sheets/sunflowerx"+scale+".png");
+		
+        green_breed = new Breed(100, 10, greens, scale, new PlantPhysics(), new PlantIA(this), new Standing());
+        blue_breed = new Breed(100, 10, blues, scale, new PlantPhysics(), new PlantIA(this), new Standing());
 
-        sunflower_breed = new Breed(100, 10,"gfx/sheets/sunflowerx4.png", scale, new PlantPhysics(), new PlantIA(this), new Standing());
-        sun_breed = new Breed(100,0, "gfx/sheets/sunx"+scale+".png",scale, new PlantPhysics(), new PlantIA(this), new Standing());
+        sunflower_breed = new Breed(100, 10, sunflower, scale, new PlantPhysics(), new PlantIA(this), new Standing());
+        sun_breed = new Breed(100,0, sun ,scale, new PlantPhysics(), new PlantIA(this), new Standing());
         //GameObject zero = new GameObject(new Point(0,0), new StaticGraphics(numbers[0]), new PlantPhysics(), new Idle() , 5*scale, 3*scale);
         //objects.add(zero);
         for (int i = 0 ; i < 5 ; ++i) {
