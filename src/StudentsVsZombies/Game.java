@@ -34,7 +34,7 @@ public class Game implements Runnable {
     private Prototype bulletPrototype;
 
 
-    private int scale = 4;
+    private int scale = 1;
     private int WIDTH = 144, HEIGHT = 112;
     private boolean running = true;
     private long desiredFPS = 60;
@@ -104,7 +104,7 @@ public class Game implements Runnable {
     private void construct_world(){
         grid = new Grid(-30, 85, 16*scale, 9, 5);
         objects = new ArrayList<>();
-        File file = new File("gfx/sheets/backgroundx4.png");
+        File file = new File("gfx/sheets/backgroundx"+scale+".png");
 		try {
 			BufferedImage img = ImageIO.read(file);
 	        StaticGraphics background = new StaticGraphics(img);
@@ -116,8 +116,8 @@ public class Game implements Runnable {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
-        green_breed = new Breed(100, 10, "gfx/sheets/plant-greenx4.png", scale, new PlantPhysics(), new PlantIA(this), new Standing());
-        blue_breed = new Breed(100, 10, "gfx/sheets/plant-icex4.png", scale, new PlantPhysics(), new PlantIA(this), new Standing());
+        green_breed = new Breed(100, 10, "gfx/sheets/plant-greenx" + scale +".png", scale, new PlantPhysics(), new PlantIA(this), new Standing());
+        blue_breed = new Breed(100, 10, "gfx/sheets/plant-icex"+scale+".png", scale, new PlantPhysics(), new PlantIA(this), new Standing());
 
         sunflower_breed = new Breed(100, 10,"gfx/sheets/sunflowerx4.png", scale, new PlantPhysics(), new PlantIA(this), new Standing());
 
