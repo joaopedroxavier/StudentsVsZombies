@@ -7,6 +7,7 @@ import StudentsVsZombies.Physics.PlantPhysics;
 import StudentsVsZombies.Physics.WalkerPhysics;
 import StudentsVsZombies.State.Standing;
 import StudentsVsZombies.State.Walking;
+import StudentsVsZombies.Graphics.StateGraphics;
 import StudentsVsZombies.Graphics.StaticGraphics;
 
 import javax.imageio.ImageIO;
@@ -120,8 +121,11 @@ public class Game implements Runnable {
 	        StaticGraphics background = new StaticGraphics(img);
 	        GameObject bg = new GameObject(new Point(0,0), background, new PlantPhysics(), new Idle(), 112*scale,144*scale);
 	        objects.add(bg);
-            bulletPrototype = new Prototype(new StaticGraphics(img), new BulletPhysics(), new Idle(), 10, 10); // colocar imagem da bullet x
-            energyPrototype = new Prototype(new StaticGraphics(img), new EnergyPhysics(), new EnergyGeneratorIA(this), 10, 10); // Colocar animacao da energia
+	        BufferedImage bullet = ImageIO.read(new File("gfx/sheets/green-bulletx"+scale+".png"));
+	        BufferedImage sunsheet = ImageIO.read(new File("gfx/sheets/sunx"+scale+".png"));
+            bulletPrototype = new Prototype(new StaticGraphics(bullet), new BulletPhysics(), new Idle(), 10, 10); // colocar imagem da bullet x
+            // TODO change StaticGraphics to StateGraphics(sunsheet,scale);
+            energyPrototype = new Prototype(new StaticGraphics(sunsheet.getSubimage(0, 0, 16*scale, 16*scale)), new EnergyPhysics(), new EnergyGeneratorIA(this), 10, 10); // Colocar animacao da energia
 		} catch (IOException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();

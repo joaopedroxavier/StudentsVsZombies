@@ -4,7 +4,10 @@ import StudentsVsZombies.Game;
 import StudentsVsZombies.GameObject;
 
 import java.awt.image.BufferedImage;
+import java.io.File;
 import java.util.ArrayList;
+
+import javax.imageio.ImageIO;
 
 public class StateGraphics extends Graphics {
     private ArrayList<BufferedImage> sprite_seq;
@@ -20,6 +23,12 @@ public class StateGraphics extends Graphics {
     }
 
     public StateGraphics(ArrayList<BufferedImage> sprite_seq) { this.sprite_seq = sprite_seq; }
+    
+    public StateGraphics(BufferedImage spritesheet, int scale) {
+    	for (int i = 0 ; i < 4 ; ++i) {
+    		sprite_seq.add((spritesheet.getSubimage(i*16*scale, 0, 16*scale, 16*scale)));
+    	}
+    }
 
     public void generateEnergy(){ }
 

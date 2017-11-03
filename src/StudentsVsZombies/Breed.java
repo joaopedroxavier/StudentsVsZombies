@@ -27,8 +27,8 @@ public class Breed {
         this.attack = attack;
 		try {
 			sprites = new ArrayList<>();
-	        ArrayList<BufferedImage> spr = new ArrayList<>();
 	        for ( String spritesheet_path : spritesheet_paths) {
+		        ArrayList<BufferedImage> spr = new ArrayList<>();
 	        	File file = new File(spritesheet_path);
 	        	BufferedImage img = ImageIO.read(file);
 	        	for (int i = 0 ; i < 4 ; ++i) {
