@@ -136,15 +136,19 @@ public class Game implements Runnable {
 		ArrayList<String> blues = new ArrayList<>();
 		ArrayList<String> sun = new ArrayList<>();
 		ArrayList<String> sunflower = new ArrayList<>();
+		ArrayList<String> zombies = new ArrayList<>();
 		greens.add("gfx/sheets/plant-greenx" + scale +".png");
 		greens.add("gfx/sheets/plant-green-shootingx" + scale +".png");
 		blues.add("gfx/sheets/plant-bluex" + scale +".png");
 		blues.add("gfx/sheets/plant-blue-shootingx" + scale +".png");
 		sun.add("gfx/sheets/sunx"+scale+".png");
 		sunflower.add("gfx/sheets/sunflowerx"+scale+".png");
+		zombies.add("gfx/sheets/zombiex"+scale+".png");
+		zombies.add("gfx/sheets/zombie-eatingx"+scale+".png");
 		
         green_breed = new Breed(100, 10, greens, scale, new PlantPhysics(), new PlantIA(this), new Standing());
         blue_breed = new Breed(100, 10, blues, scale, new PlantPhysics(), new PlantIA(this), new Standing());
+        zombie_breed = new Breed(100,10, zombies, scale, new PlantPhysics(), new PlantIA(this), new Standing());
 
         sunflower_breed = new Breed(100, 10, sunflower, scale, new PlantPhysics(), new PlantIA(this), new Standing());
         sun_breed = new Breed(100,0, sun ,scale, new PlantPhysics(), new PlantIA(this), new Standing());
@@ -154,6 +158,7 @@ public class Game implements Runnable {
             objects.add(green_breed.spawn(new Point(i, 2), grid));
             objects.add(blue_breed.spawn(new Point(i, 1), grid));
             objects.add(sunflower_breed.spawn(new Point(i, 0), grid));
+            objects.add(zombie_breed.spawn(new Point (i,7), grid));
         }
         objects.add(sun_breed.spawn(new Point (0, 0), grid));
 
