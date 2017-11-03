@@ -25,8 +25,7 @@ public class Grid {
     }
 
     public Point get_loc(Point cell) {
-        return new Point((int)(x_ + cell_size*(0.5 + cell.y)),
-                (int)(y_ + cell_size*(0.5 + cell.x)));
+        return new Point(x_ + cell_size*cell.y, (int)(y_ + cell_size*(cell.x-0.2)));
     }
 
     public Point get_limit() { return new Point( N - 1, M- 1); }
