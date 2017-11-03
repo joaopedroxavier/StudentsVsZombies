@@ -1,9 +1,8 @@
 package StudentsVsZombies;
 
-import StudentsVsZombies.Input.EnergyGeneratorIA;
-import StudentsVsZombies.Input.PlantIA;
-import StudentsVsZombies.Input.WalkerIA;
-import StudentsVsZombies.Input.Idle;
+import StudentsVsZombies.Input.*;
+import StudentsVsZombies.Physics.BulletPhysics;
+import StudentsVsZombies.Physics.EnergyPhysics;
 import StudentsVsZombies.Physics.PlantPhysics;
 import StudentsVsZombies.Physics.WalkerPhysics;
 import StudentsVsZombies.State.Standing;
@@ -30,8 +29,8 @@ public class Game implements Runnable {
     public Breed zombie_breed;
     public Breed plant_breed;
     public Breed sunflower_breed;
-    private GameObject energyPrototype;
-    private GameObject bulletPrototype;
+    private Prototype energyPrototype;
+    private Prototype bulletPrototype;
 
 
     private int scale = 4;
@@ -110,6 +109,8 @@ public class Game implements Runnable {
 	        StaticGraphics background = new StaticGraphics(img);
 	        GameObject bg = new GameObject(new Point(0,0), background, new PlantPhysics(), new Idle(), 112*scale,144*scale);
 	        objects.add(bg);
+            bulletPrototype = new Prototype(new StaticGraphics(img), new BulletPhysics(), new EmptyInput(), 10, 10); // colocar imagem da bullet x
+            energyPrototype = new Prototype(new StaticGraphics(img), new EnergyPhysics(), new EnergyGeneratorIA(this), 10, 10); // Colocar animacao da energia
 		} catch (IOException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();

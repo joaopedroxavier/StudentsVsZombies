@@ -4,5 +4,5 @@ import StudentsVsZombies.GameObject;
 
 public abstract class Input {
     abstract public void update(GameObject obj, Boolean clicked);
-    abstract public Input copy();
+    public abstract Input copy();
 }
