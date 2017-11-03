@@ -34,7 +34,7 @@ public class Game implements Runnable {
     private Prototype bulletPrototype;
 
 
-    private int scale = 1;
+    private int scale = 4;
     private int WIDTH = 144, HEIGHT = 112;
     private boolean running = true;
     private long desiredFPS = 60;
