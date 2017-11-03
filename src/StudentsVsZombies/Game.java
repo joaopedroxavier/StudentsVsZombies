@@ -32,6 +32,7 @@ public class Game implements Runnable {
     public Breed sunflower_breed;
     private Prototype energyPrototype;
     private Prototype bulletPrototype;
+    public BufferedImage[] numbers;
 
 
     private int scale = 4;
@@ -104,6 +105,14 @@ public class Game implements Runnable {
     private void construct_world(){
         grid = new Grid(-30, 85, 16*scale, 9, 5);
         objects = new ArrayList<>();
+        numbers = new BufferedImage[10];
+        try {
+        	File file = new File("gfx/sheets/numbersx" + scale + ".png");
+        	BufferedImage img = ImageIO.read(file);
+        	for (int i = 0 ; i < 10 ; ++i) {
+        		numbers[i] = img.getSubimage(3*scale*i, 0, 3*scale, 5*scale);
+        	}
+        } catch (IOException e) { e.printStackTrace(); }
         File file = new File("gfx/sheets/backgroundx"+scale+".png");
 		try {
 			BufferedImage img = ImageIO.read(file);
@@ -120,6 +129,8 @@ public class Game implements Runnable {
         blue_breed = new Breed(100, 10, "gfx/sheets/plant-icex"+scale+".png", scale, new PlantPhysics(), new PlantIA(this), new Standing());
 
         sunflower_breed = new Breed(100, 10,"gfx/sheets/sunflowerx4.png", scale, new PlantPhysics(), new PlantIA(this), new Standing());
+        //GameObject zero = new GameObject(new Point(0,0), new StaticGraphics(numbers[0]), new PlantPhysics(), new Idle() , 5*scale, 3*scale);
+        //objects.add(zero);
 
         for (int i = 0 ; i < 5 ; ++i) {
             objects.add(green_breed.spawn(new Point(2, i), grid));
