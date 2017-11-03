@@ -110,7 +110,7 @@ public class Game implements Runnable {
 	        StaticGraphics background = new StaticGraphics(img);
 	        GameObject bg = new GameObject(new Point(0,0), background, new PlantPhysics(), new Idle(), 112*scale,144*scale);
 	        objects.add(bg);
-            bulletPrototype = new Prototype(new StaticGraphics(img), new BulletPhysics(), new EmptyInput(), 10, 10); // colocar imagem da bullet x
+            bulletPrototype = new Prototype(new StaticGraphics(img), new BulletPhysics(), new Idle(), 10, 10); // colocar imagem da bullet x
             energyPrototype = new Prototype(new StaticGraphics(img), new EnergyPhysics(), new EnergyGeneratorIA(this), 10, 10); // Colocar animacao da energia
 		} catch (IOException e) {
 			// TODO Auto-generated catch block

@@ -25,7 +25,7 @@ public class WalkerIA extends Input {
 
         Cell cell = obj.getListOfObjects();
         for(Spawnable other : cell) {
-            if(other.getBreed() == game.plant_breed && currentState instanceof Walking) {
+            if(other.getBreed() == game.green_breed && currentState instanceof Walking) {
                     currentState.change();
             }
         }
