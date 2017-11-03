@@ -30,6 +30,7 @@ public class Game implements Runnable {
     public Breed green_breed;
     public Breed blue_breed;
     public Breed sunflower_breed;
+    public Breed sun_breed;
     private Prototype energyPrototype;
     private Prototype bulletPrototype;
     public BufferedImage[] numbers;
@@ -129,14 +130,16 @@ public class Game implements Runnable {
         blue_breed = new Breed(100, 10, "gfx/sheets/plant-icex"+scale+".png", scale, new PlantPhysics(), new PlantIA(this), new Standing());
 
         sunflower_breed = new Breed(100, 10,"gfx/sheets/sunflowerx4.png", scale, new PlantPhysics(), new PlantIA(this), new Standing());
+        sun_breed = new Breed(100,0, "gfx/sheets/sunx"+scale+".png",scale, new PlantPhysics(), new PlantIA(this), new Standing());
         //GameObject zero = new GameObject(new Point(0,0), new StaticGraphics(numbers[0]), new PlantPhysics(), new Idle() , 5*scale, 3*scale);
         //objects.add(zero);
-
         for (int i = 0 ; i < 5 ; ++i) {
             objects.add(green_breed.spawn(new Point(2, i), grid));
             objects.add(blue_breed.spawn(new Point(1, i), grid));
             objects.add(sunflower_breed.spawn(new Point(0, i), grid));
         }
+        objects.add(sun_breed.spawn(new Point (0, 0), grid));
+
     }
 
     public void generateEnergy() {
