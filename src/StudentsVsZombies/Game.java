@@ -126,11 +126,24 @@ public class Game implements Runnable {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
-        green_breed = new Breed(100, 10, "gfx/sheets/plant-greenx" + scale +".png", scale, new PlantPhysics(), new PlantIA(this), new Standing());
-        blue_breed = new Breed(100, 10, "gfx/sheets/plant-icex"+scale+".png", scale, new PlantPhysics(), new PlantIA(this), new Standing());
+		
+		// build list of animation sheets relative to the entities
+		ArrayList<String> greens = new ArrayList<>();
+		ArrayList<String> blues = new ArrayList<>();
+		ArrayList<String> sun = new ArrayList<>();
+		ArrayList<String> sunflower = new ArrayList<>();
+		greens.add("gfx/sheets/plant-greenx" + scale +".png");
+		greens.add("gfx/sheets/plant-green-shootingx" + scale +".png");
+		blues.add("gfx/sheets/plant-bluex" + scale +".png");
+		blues.add("gfx/sheets/plant-blue-shootingx" + scale +".png");
+		sun.add("gfx/sheets/sunx"+scale+".png");
+		sunflower.add("gfx/sheets/sunflowerx"+scale+".png");
+		
+        green_breed = new Breed(100, 10, greens, scale, new PlantPhysics(), new PlantIA(this), new Standing());
+        blue_breed = new Breed(100, 10, blues, scale, new PlantPhysics(), new PlantIA(this), new Standing());
 
-        sunflower_breed = new Breed(100, 10,"gfx/sheets/sunflowerx4.png", scale, new PlantPhysics(), new PlantIA(this), new Standing());
-        sun_breed = new Breed(100,0, "gfx/sheets/sunx"+scale+".png",scale, new PlantPhysics(), new PlantIA(this), new Standing());
+        sunflower_breed = new Breed(100, 10, sunflower, scale, new PlantPhysics(), new PlantIA(this), new Standing());
+        sun_breed = new Breed(100,0, sun ,scale, new PlantPhysics(), new PlantIA(this), new Standing());
         //GameObject zero = new GameObject(new Point(0,0), new StaticGraphics(numbers[0]), new PlantPhysics(), new Idle() , 5*scale, 3*scale);
         //objects.add(zero);
         for (int i = 0 ; i < 5 ; ++i) {

@@ -21,19 +21,21 @@ public class Breed {
     private State base_state;
     ArrayList <ArrayList<BufferedImage>> sprites;
     /** @param spritesheet_path Path to the image which has the sequence of pictures of an animation. **/
-    Breed(int total_hp, int attack, String spritesheet_path, int scale, Physics py, Input in, State base_state){
+    Breed(int total_hp, int attack, ArrayList<String> spritesheet_paths, int scale, Physics py, Input in, State base_state){
         this.py = py; this.in = in; this.base_state = base_state;
         this.totalHp = total_hp;
         this.attack = attack;
 		try {
 			sprites = new ArrayList<>();
 	        ArrayList<BufferedImage> spr = new ArrayList<>();
-	        File file = new File(spritesheet_path);
-			BufferedImage img = ImageIO.read(file);
-			for (int i = 0 ; i < 4 ; ++i) {
-				spr.add((img.getSubimage(i*16*scale, 0, 16*scale, 16*scale)));
-			}
-	        sprites.add(spr);
+	        for ( String spritesheet_path : spritesheet_paths) {
+	        	File file = new File(spritesheet_path);
+	        	BufferedImage img = ImageIO.read(file);
+	        	for (int i = 0 ; i < 4 ; ++i) {
+	        		spr.add((img.getSubimage(i*16*scale, 0, 16*scale, 16*scale)));
+	        	}
+	        	sprites.add(spr);
+	        }
 		}
 		catch (IOException e) {
 				e.printStackTrace();
