@@ -1,6 +1,11 @@
-/bin/
-
-# eclipse stuff
-
+#Binary files
+bin
+out
+#Eclipse files
 .classpath
 .project
+#IDEA files
+.idea
+*.yml
+*.log
+OurFirstGame.iml
