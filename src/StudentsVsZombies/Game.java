@@ -104,7 +104,7 @@ public class Game implements Runnable {
     }
 
     private void construct_world(){
-        grid = new Grid(-30, 85, 16*scale, 9, 5);
+        grid = new Grid(0, 128, 16*scale, 9, 5);
         objects = new ArrayList<>();
         numbers = new BufferedImage[10];
         try {
@@ -134,9 +134,9 @@ public class Game implements Runnable {
         //GameObject zero = new GameObject(new Point(0,0), new StaticGraphics(numbers[0]), new PlantPhysics(), new Idle() , 5*scale, 3*scale);
         //objects.add(zero);
         for (int i = 0 ; i < 5 ; ++i) {
-            objects.add(green_breed.spawn(new Point(2, i), grid));
-            objects.add(blue_breed.spawn(new Point(1, i), grid));
-            objects.add(sunflower_breed.spawn(new Point(0, i), grid));
+            objects.add(green_breed.spawn(new Point(i, 2), grid));
+            objects.add(blue_breed.spawn(new Point(i, 1), grid));
+            objects.add(sunflower_breed.spawn(new Point(i, 0), grid));
         }
         objects.add(sun_breed.spawn(new Point (0, 0), grid));
 
