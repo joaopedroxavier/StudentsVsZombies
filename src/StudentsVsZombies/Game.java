@@ -28,7 +28,8 @@ public class Game implements Runnable {
     private GameObject holding;
     private Point click;
     public Breed zombie_breed;
-    public Breed plant_breed;
+    public Breed green_breed;
+    public Breed blue_breed;
     public Breed sunflower_breed;
     private GameObject energyPrototype;
     private GameObject bulletPrototype;
@@ -114,11 +115,14 @@ public class Game implements Runnable {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
-        plant_breed = new Breed(100, 10, "gfx/sheets/plant-greenx4.png", scale, new PlantPhysics(), new PlantIA(this), new Standing());
+        green_breed = new Breed(100, 10, "gfx/sheets/plant-greenx4.png", scale, new PlantPhysics(), new PlantIA(this), new Standing());
+        blue_breed = new Breed(100, 10, "gfx/sheets/plant-icex4.png", scale, new PlantPhysics(), new PlantIA(this), new Standing());
+
         sunflower_breed = new Breed(100, 10,"gfx/sheets/sunflowerx4.png", scale, new PlantPhysics(), new PlantIA(this), new Standing());
 
         for (int i = 0 ; i < 5 ; ++i) {
-            objects.add(plant_breed.spawn(new Point(1, i), grid));
+            objects.add(green_breed.spawn(new Point(2, i), grid));
+            objects.add(blue_breed.spawn(new Point(1, i), grid));
             objects.add(sunflower_breed.spawn(new Point(0, i), grid));
         }
     }
