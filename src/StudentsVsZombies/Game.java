@@ -104,7 +104,7 @@ public class Game implements Runnable {
     }
 
     private void construct_world(){
-        grid = new Grid(0, 128, 16*scale, 9, 5);
+        grid = new Grid(0, 128, 16*scale, 5, 9);
         objects = new ArrayList<>();
         dying = new ArrayList<>();
         numbers = new BufferedImage[10];
@@ -152,7 +152,7 @@ public class Game implements Runnable {
             objects.add(blue_breed.spawn(new Point(i, 1), grid));
             objects.add(sunflower_breed.spawn(new Point(i, 0), grid));
         }
-        objects.add(zombie_breed.spawn(new Point (1,7), grid));
+        objects.add(zombie_breed.spawn(new Point (1,8), grid));
         objects.add(bulletPrototype.create(new Point(200, 200))); // sun and bullet creation example
         objects.add(energyPrototype.create(new Point(100, 100)));
 

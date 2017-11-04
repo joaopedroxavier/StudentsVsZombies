@@ -21,15 +21,17 @@ public class WalkerIA extends Input {
         Spawnable obj = (Spawnable) o;
         State currentState = obj.state;
 
-        obj.hp--;
-
-        if(obj.hp <= 0) { currentState.die(obj, game); }
+        if(obj.hp <= 0) { currentState.die(obj, game); System.out.println("Zombie is ded men."); }
 
         Cell cell = obj.getListOfObjects();
+        boolean foundPlant = false;
         for(Spawnable other : cell) {
             if(other.getBreed() == game.green_breed && currentState instanceof Walking) {
                     currentState.change(obj);
+                    foundPlant = true;
+                    System.out.println("Zombie is eating.");
             }
         }
+        if(!foundPlant && currentState instanceof Eating) { currentState.change(obj); }
     }
 }

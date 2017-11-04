@@ -24,23 +24,21 @@ public class Grid {
         return new Point((pos.x - x_)/cell_size, (pos.y - y_)/cell_size);
     }
 
-    public Point get_loc(Point cell) {
-        return new Point(x_ + cell_size*cell.y, (int)(y_ + cell_size*(cell.x-0.2)));
-    }
+    public Point get_loc(Point cell) { return new Point(x_ + cell_size*cell.y, (int)(y_ + cell_size*(cell.x) - 0.2)); }
 
-    public Point get_limit() { return new Point( N - 1, M- 1); }
+    public Point get_limit() { return new Point( N - 1, M - 1); }
 
-    public Cell getListOfObjects(Point cell) { return grid[cell.x][cell.y]; }
+    public Cell getListOfObjects(Point cell) { return grid[cell.y][cell.x]; }
 
     int get_size() { return cell_size; }
 
-    void remove(GameObject obj, Point cell){ grid[cell.x][cell.y].remove(obj); }
+    void remove(GameObject obj, Point cell){ grid[cell.y][cell.x].remove(obj); }
 
     void add(Spawnable obj, Point cell){
-        grid[cell.x][cell.y].add(obj);
+        grid[cell.y][cell.x].add(obj);
     }
 
-    Cell get_inCell(Point cell) { return grid[cell.x][cell.y]; }
+    Cell get_inCell(Point cell) { return grid[cell.y][cell.x]; }
 
 
 
