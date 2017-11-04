@@ -26,12 +26,12 @@ public class WalkerIA extends Input {
         Cell cell = obj.getListOfObjects();
         boolean foundPlant = false;
         for(Spawnable other : cell) {
-            if(other.getBreed() == game.green_breed && currentState instanceof Walking) {
-                    currentState.change(obj);
+            if(other.getBreed() == game.green_breed || other.getBreed() == game.blue_breed || other.getBreed() == game.sunflower_breed) {
                     foundPlant = true;
                     System.out.println("Zombie is eating.");
             }
         }
+        if(foundPlant && currentState instanceof Walking) { currentState.change(obj); }
         if(!foundPlant && currentState instanceof Eating) { currentState.change(obj); }
     }
 }
