@@ -13,6 +13,8 @@ import java.awt.*;
 
 public class PlantIA extends Input {
     private Game game;
+    private double shoot_speed = 0.01;
+    private int shoot_counter = 0;
 
     public PlantIA copy(){ return new PlantIA(game); }
 
@@ -40,12 +42,14 @@ public class PlantIA extends Input {
             }
         }
 
-        if(zombiesInRow == 0 && currentState instanceof Shooting) {
-            currentState.change(obj);
-            System.out.println("Plant is standing now.");
-        } else if(zombiesInRow > 0 && currentState instanceof Standing) {
-            currentState.change(obj);
-            System.out.println("Plant is shooting now.");
+        if(zombiesInRow == 0 && currentState instanceof Shooting) currentState.change(obj);
+        else if(zombiesInRow > 0 && currentState instanceof Standing) currentState.change(obj);
+        if(currentState instanceof Shooting) {
+            shoot_counter++;
+            if(shoot_counter == (int)(1/shoot_speed)) {
+                game.addObject(game.bulletPrototype.create(new Point(obj.x_, obj.y_)));
+                shoot_counter = 0;
+            }
         }
     }
 }

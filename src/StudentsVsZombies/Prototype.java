@@ -30,7 +30,7 @@ public class Prototype {
 		}
     }
 
-    GameObject create(Point pos){
+    public GameObject create(Point pos){
         return new GameObject(original, pos);
     }
 }

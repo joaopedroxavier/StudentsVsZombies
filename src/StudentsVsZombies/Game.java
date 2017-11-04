@@ -23,6 +23,7 @@ import java.util.TreeSet;
 public class Game implements Runnable {
     private ArrayList<GameObject> objects;
     private ArrayList<GameObject> dying;
+    private ArrayList<GameObject> borning;
     private Grid grid;
     private GameObject holding;
     private Point click;
@@ -107,6 +108,7 @@ public class Game implements Runnable {
         grid = new Grid(0, 128, 16*scale, 5, 9);
         objects = new ArrayList<>();
         dying = new ArrayList<>();
+        borning = new ArrayList<>();
         numbers = new BufferedImage[10];
         try {
         	File file = new File("gfx/sheets/numbersx" + scale + ".png");
@@ -153,7 +155,7 @@ public class Game implements Runnable {
             objects.add(sunflower_breed.spawn(new Point(i, 0), grid));
         }
         objects.add(zombie_breed.spawn(new Point (1,8), grid));
-        objects.add(bulletPrototype.create(new Point(200, 200))); // sun and bullet creation example
+        //objects.add(bulletPrototype.create(new Point(200, 200))); // sun and bullet creation example
         objects.add(energyPrototype.create(new Point(100, 100)));
 
     }
@@ -165,7 +167,9 @@ public class Game implements Runnable {
     private void update(){
         bufferStrategy.getDrawGraphics().clearRect(0, 0, WIDTH, HEIGHT);
         for(GameObject obj: dying) objects.remove(obj);
+        for(GameObject obj: borning) objects.add(obj);
         dying.clear();
+        borning.clear();
         for(GameObject obj : objects){ obj.py.update(obj); obj.gr.update(obj, this); obj.in.update(obj, true); }
         bufferStrategy.show();
     }
@@ -173,6 +177,7 @@ public class Game implements Runnable {
     public void removeObject(GameObject obj){
         dying.add(obj);
     }
+    public void addObject(GameObject obj){ borning.add(obj); }
 
     public static void main(String [] args){
          Game game = new Game();
