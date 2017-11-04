@@ -2,7 +2,7 @@ package StudentsVsZombies.Physics;
 
 import StudentsVsZombies.GameObject;
 
-public class PlantPhysics extends Physics {
-    public PlantPhysics copy() { return new PlantPhysics(); }
+public class EmptyPhysics extends Physics{
+    public EmptyPhysics copy() { return new EmptyPhysics(); }
     public void update(GameObject obj){/* Do nothing */}
 }

@@ -24,7 +24,8 @@ public class PlantIA extends Input {
         Spawnable obj = (Spawnable) o;
         State currentState = obj.state;
 
-        if (obj.hp <= 0) { currentState.die(); }
+
+        if (obj.hp <= 0) { currentState.die(obj, game); }
 
         Point limits = obj.getLimits();
         Point myCell = obj.getCell();
@@ -36,13 +37,13 @@ public class PlantIA extends Input {
             for(Spawnable other : cell) {
                 if(other.getBreed() == game.zombie_breed && currentState instanceof Standing) {
                     zombiesInRow++;
-                    currentState.change();
+                    currentState.change(obj);
                 }
             }
         }
 
         if(zombiesInRow == 0 && currentState instanceof Shooting) {
-            currentState.change();
+            currentState.change(obj);
         }
     }
 }

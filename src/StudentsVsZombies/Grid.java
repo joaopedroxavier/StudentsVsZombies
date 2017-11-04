@@ -36,11 +36,11 @@ public class Grid {
 
     void remove(GameObject obj, Point cell){ grid[cell.x][cell.y].remove(obj); }
 
-    void add(GameObject obj, Point cell){
-        /*grid[cell.x][cell.y].add(obj);*/
+    void add(Spawnable obj, Point cell){
+        grid[cell.x][cell.y].add(obj);
     }
 
-    //Cell get_inCell(Point cell) { return grid[cell.x][cell.y]; }
+    Cell get_inCell(Point cell) { return grid[cell.x][cell.y]; }
 
 
 

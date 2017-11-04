@@ -19,8 +19,9 @@ public class Breed {
     private Physics py;
     private Input in;
     private State base_state;
-    ArrayList <ArrayList<BufferedImage>> sprites;
-    /** @param spritesheet_path Path to the image which has the sequence of pictures of an animation. **/
+    private ArrayList <ArrayList<BufferedImage>> sprites;
+
+
     Breed(int total_hp, int attack, ArrayList<String> spritesheet_paths, int scale, Physics py, Input in, State base_state){
         this.py = py; this.in = in; this.base_state = base_state;
         this.totalHp = total_hp;
@@ -31,7 +32,7 @@ public class Breed {
 		        ArrayList<BufferedImage> spr = new ArrayList<>();
 	        	File file = new File(spritesheet_path);
 	        	BufferedImage img = ImageIO.read(file);
-	        	for (int i = 0 ; i < 4 ; ++i) {
+                for (int i = 0 ; i < img.getWidth()/(16*scale); ++i) {
 	        		spr.add((img.getSubimage(i*16*scale, 0, 16*scale, 16*scale)));
 	        	}
 	        	sprites.add(spr);
@@ -47,4 +48,6 @@ public class Breed {
 
        return monster;
     }
+
+    public ArrayList<ArrayList<BufferedImage>> getSprites(){ return sprites; }
 }

@@ -1,10 +1,7 @@
 package StudentsVsZombies;
 
 import StudentsVsZombies.Input.*;
-import StudentsVsZombies.Physics.BulletPhysics;
-import StudentsVsZombies.Physics.EnergyPhysics;
-import StudentsVsZombies.Physics.PlantPhysics;
-import StudentsVsZombies.Physics.WalkerPhysics;
+import StudentsVsZombies.Physics.*;
 import StudentsVsZombies.State.Standing;
 import StudentsVsZombies.State.Walking;
 import StudentsVsZombies.Graphics.StateGraphics;
@@ -20,10 +17,12 @@ import java.awt.image.BufferedImage;
 import java.io.File;
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.HashSet;
+import java.util.TreeSet;
 
 public class Game implements Runnable {
     private ArrayList<GameObject> objects;
-    private Breed zombie, plant;
+    private ArrayList<GameObject> dying;
     private Grid grid;
     private GameObject holding;
     private Point click;
@@ -32,8 +31,8 @@ public class Game implements Runnable {
     public Breed blue_breed;
     public Breed sunflower_breed;
     public Breed sun_breed;
-    private Prototype energyPrototype;
-    private Prototype bulletPrototype;
+    public Prototype energyPrototype;
+    public Prototype bulletPrototype;
     public BufferedImage[] numbers;
 
 
@@ -107,6 +106,7 @@ public class Game implements Runnable {
     private void construct_world(){
         grid = new Grid(0, 128, 16*scale, 9, 5);
         objects = new ArrayList<>();
+        dying = new ArrayList<>();
         numbers = new BufferedImage[10];
         try {
         	File file = new File("gfx/sheets/numbersx" + scale + ".png");
@@ -119,17 +119,9 @@ public class Game implements Runnable {
 		try {
 			BufferedImage img = ImageIO.read(file);
 	        StaticGraphics background = new StaticGraphics(img);
-	        GameObject bg = new GameObject(new Point(0,0), background, new PlantPhysics(), new Idle(), 112*scale,144*scale);
+	        GameObject bg = new GameObject(new Point(0,0), background, new EmptyPhysics(), new EmptyInput(), 112*scale,144*scale);
 	        objects.add(bg);
-	        BufferedImage bullet = ImageIO.read(new File("gfx/sheets/green-bulletx"+scale+".png"));
-	        BufferedImage sunsheet = ImageIO.read(new File("gfx/sheets/sunx"+scale+".png"));
-            bulletPrototype = new Prototype(new StaticGraphics(bullet), new BulletPhysics(), new Idle(), 10, 10); // colocar imagem da bullet x
-            // TODO change StaticGraphics to StateGraphics(sunsheet,scale);
-            energyPrototype = new Prototype(new StaticGraphics(sunsheet.getSubimage(0, 0, 16*scale, 16*scale)), new EnergyPhysics(), new EnergyGeneratorIA(this), 10, 10); // Colocar animacao da energia
-		} catch (IOException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
+		} catch (IOException e) { System.out.println("Background file not found."); }
 		
 		// build list of animation sheets relative to the entities
 		ArrayList<String> greens = new ArrayList<>();
@@ -148,19 +140,21 @@ public class Game implements Runnable {
 		
         green_breed = new Breed(100, 10, greens, scale, new PlantPhysics(), new PlantIA(this), new Standing());
         blue_breed = new Breed(100, 10, blues, scale, new PlantPhysics(), new PlantIA(this), new Standing());
-        zombie_breed = new Breed(100,10, zombies, scale, new PlantPhysics(), new PlantIA(this), new Standing());
+        zombie_breed = new Breed(700,10, zombies, scale, new WalkerPhysics(), new WalkerIA(this), new Walking());
+        sunflower_breed = new Breed(100, 10, sunflower, scale, new PlantPhysics(), new EnergyGeneratorIA(this), new Standing());
 
-        sunflower_breed = new Breed(100, 10, sunflower, scale, new PlantPhysics(), new PlantIA(this), new Standing());
-        sun_breed = new Breed(100,0, sun ,scale, new PlantPhysics(), new PlantIA(this), new Standing());
+        bulletPrototype = new Prototype("gfx/sheets/green-bulletx"+scale+".png", scale, new BulletPhysics(), new EmptyInput(), 10, 10); // colocar imagem da bullet x
+        energyPrototype = new Prototype("gfx/sheets/sunx"+scale+".png", scale, new EnergyPhysics(), new EmptyInput(), 10, 10); // Colocar animacao da energia
         //GameObject zero = new GameObject(new Point(0,0), new StaticGraphics(numbers[0]), new PlantPhysics(), new Idle() , 5*scale, 3*scale);
         //objects.add(zero);
         for (int i = 0 ; i < 5 ; ++i) {
             objects.add(green_breed.spawn(new Point(i, 2), grid));
             objects.add(blue_breed.spawn(new Point(i, 1), grid));
             objects.add(sunflower_breed.spawn(new Point(i, 0), grid));
-            objects.add(zombie_breed.spawn(new Point (i,7), grid));
         }
-        objects.add(sun_breed.spawn(new Point (0, 0), grid));
+        objects.add(zombie_breed.spawn(new Point (1,7), grid));
+        objects.add(bulletPrototype.create(new Point(200, 200))); // sun and bullet creation example
+        objects.add(energyPrototype.create(new Point(100, 100)));
 
     }
 
@@ -170,11 +164,15 @@ public class Game implements Runnable {
 
     private void update(){
         bufferStrategy.getDrawGraphics().clearRect(0, 0, WIDTH, HEIGHT);
+        for(GameObject obj: dying) objects.remove(obj);
+        dying.clear();
         for(GameObject obj : objects){ obj.py.update(obj); obj.gr.update(obj, this); obj.in.update(obj, true); }
         bufferStrategy.show();
     }
 
-    public Point get_size(){return new Point(WIDTH, HEIGHT);}
+    public void removeObject(GameObject obj){
+        dying.add(obj);
+    }
 
     public static void main(String [] args){
          Game game = new Game();
