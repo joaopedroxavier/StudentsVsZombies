@@ -1,19 +1,20 @@
 package StudentsVsZombies;
 
 import java.awt.*;
+import java.util.ArrayList;
 import java.util.TreeSet;
 
 public class Grid {
     private int x_, y_;
     private int cell_size;
     private int M, N;
-    private Cell grid[][];
+    private ArrayList<Spawnable> grid[][];
 
     Grid(int x, int y, int cell_size, int N, int M) {
         x_ = x; y_ = y;
         this.cell_size = cell_size;
         this.M = M; this.N = N;
-        grid = new Cell[N][M];
+        grid = new ArrayList[N][M];
         for(int i = 0; i < N; i++) {
             for (int j = 0; j < M; j++)
                 grid[i][j] = new Cell();
@@ -28,7 +29,7 @@ public class Grid {
 
     public Point get_limit() { return new Point( N - 1, M - 1); }
 
-    public Cell getListOfObjects(Point cell) { return grid[cell.y][cell.x]; }
+    public ArrayList<Spawnable> getListOfObjects(Point cell) { return grid[cell.y][cell.x]; }
 
     int get_size() { return cell_size; }
 
@@ -38,7 +39,7 @@ public class Grid {
         grid[cell.y][cell.x].add(obj);
     }
 
-    Cell get_inCell(Point cell) { return grid[cell.y][cell.x]; }
+    ArrayList<Spawnable> get_inCell(Point cell) { return grid[cell.y][cell.x]; }
 
 
 
