@@ -1,6 +1,7 @@
 package StudentsVsZombies.Input;
 
 import java.util.ArrayList;
+import java.util.List;
 
 import StudentsVsZombies.Cell;
 import StudentsVsZombies.Game;
@@ -25,7 +26,7 @@ public class WalkerIA extends Input {
 
         if(obj.hp <= 0) { currentState.die(obj, game); System.out.println("Zombie is ded men."); }
 
-        ArrayList<Spawnable> cell = obj.getListOfObjects();
+        List<Spawnable> cell = obj.getListOfObjects();
         boolean foundPlant = false;
         for(Spawnable other : cell) {
             if(other.getBreed() == game.green_breed || other.getBreed() == game.blue_breed || other.getBreed() == game.sunflower_breed) {

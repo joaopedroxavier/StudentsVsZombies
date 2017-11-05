@@ -11,6 +11,7 @@ import StudentsVsZombies.State.Walking;
 
 import java.awt.*;
 import java.util.ArrayList;
+import java.util.List;
 
 public class PlantIA extends Input {
     private Game game;
@@ -35,7 +36,7 @@ public class PlantIA extends Input {
 
         for(int i=myCell.x; i<=limits.y; i++) {
             Point point = new Point(i, myCell.y);
-            ArrayList<Spawnable> cell = obj.getListOfObjects(point);
+            List<Spawnable> cell = obj.getListOfObjects(point);
             for(Spawnable other : cell) {
                 if(other.getBreed() == game.zombie_breed) {
                     zombiesInRow++;

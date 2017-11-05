@@ -2,6 +2,8 @@ package StudentsVsZombies;
 
 import java.awt.*;
 import java.util.ArrayList;
+import java.util.Collections;
+import java.util.List;
 import java.util.TreeSet;
 
 public class Grid {
@@ -30,7 +32,7 @@ public class Grid {
 
     public Point get_limit() { return new Point( N - 1, M - 1); }
 
-    public ArrayList<Spawnable> getListOfObjects(Point cell) { return grid[cell.y][cell.x]; }
+    public List<Spawnable> getListOfObjects(Point cell) { return Collections.unmodifiableList(grid[cell.y][cell.x]); }
 
     int get_size() { return cell_size; }
 
