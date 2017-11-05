@@ -10,14 +10,15 @@ public class Grid {
     private int M, N;
     private ArrayList<Spawnable> grid[][];
 
-    Grid(int x, int y, int cell_size, int N, int M) {
+    @SuppressWarnings("unchecked")
+	Grid(int x, int y, int cell_size, int N, int M) {
         x_ = x; y_ = y;
         this.cell_size = cell_size;
         this.M = M; this.N = N;
         grid = new ArrayList[N][M];
         for(int i = 0; i < N; i++) {
             for (int j = 0; j < M; j++)
-                grid[i][j] = new Cell();
+                grid[i][j] = new ArrayList<Spawnable>();
         }
     }
 
@@ -25,7 +26,7 @@ public class Grid {
         return new Point((pos.x - x_)/cell_size, (pos.y - y_)/cell_size);
     }
 
-    public Point get_loc(Point cell) { return new Point(x_ + cell_size*cell.y, (int)(y_ + cell_size*(cell.x) - 0.2)); }
+    public Point get_loc(Point cell) { return new Point(x_ + cell_size*cell.y, (int)(y_ + cell_size*(cell.x) - 0.0)); }
 
     public Point get_limit() { return new Point( N - 1, M - 1); }
 
@@ -40,7 +41,5 @@ public class Grid {
     }
 
     ArrayList<Spawnable> get_inCell(Point cell) { return grid[cell.y][cell.x]; }
-
-
 
 }
