@@ -13,7 +13,7 @@ public class Grid {
     private ArrayList<Spawnable> grid[][];
 
     @SuppressWarnings("unchecked")
-	Grid(int x, int y, int cell_size, int N, int M) {
+	public Grid(int x, int y, int cell_size, int N, int M) {
         x_ = x; y_ = y;
         this.cell_size = cell_size;
         this.M = M; this.N = N;
@@ -34,11 +34,11 @@ public class Grid {
 
     public List<Spawnable> getListOfObjects(Point cell) { return Collections.unmodifiableList(grid[cell.y][cell.x]); }
 
-    int get_size() { return cell_size; }
+    public int get_size() { return cell_size; }
 
-    void remove(GameObject obj, Point cell){ grid[cell.y][cell.x].remove(obj); }
+    public void remove(GameObject obj, Point cell){ grid[cell.y][cell.x].remove(obj); }
 
-    void add(Spawnable obj, Point cell){
+    public void add(Spawnable obj, Point cell){
         grid[cell.y][cell.x].add(obj);
     }
 }
