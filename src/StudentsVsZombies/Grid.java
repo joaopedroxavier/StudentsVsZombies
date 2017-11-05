@@ -39,7 +39,4 @@ public class Grid {
     void add(Spawnable obj, Point cell){
         grid[cell.y][cell.x].add(obj);
     }
-
-    ArrayList<Spawnable> get_inCell(Point cell) { return grid[cell.y][cell.x]; }
-
 }
