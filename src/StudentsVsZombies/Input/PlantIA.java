@@ -1,6 +1,5 @@
 package StudentsVsZombies.Input;
 
-import StudentsVsZombies.Cell;
 import StudentsVsZombies.Game;
 import StudentsVsZombies.GameObject;
 import StudentsVsZombies.Spawnable;
@@ -10,7 +9,6 @@ import StudentsVsZombies.State.State;
 import StudentsVsZombies.State.Walking;
 
 import java.awt.*;
-import java.util.ArrayList;
 import java.util.List;
 
 public class PlantIA extends Input {
