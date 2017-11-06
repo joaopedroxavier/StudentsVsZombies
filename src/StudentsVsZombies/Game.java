@@ -105,7 +105,7 @@ public class Game implements Runnable {
     }
 
     private void construct_world(){
-        grid = new Grid(0, 128, 16*scale, 5, 9);
+        grid = new Grid(0, 128-16, 16*scale, 5, 9);
         objects = new ArrayList<>();
         dying = new ArrayList<>();
         borning = new ArrayList<>();
