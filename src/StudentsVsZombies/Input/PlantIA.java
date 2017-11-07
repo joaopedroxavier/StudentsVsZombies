@@ -44,6 +44,7 @@ public class PlantIA extends Input {
 
         if(zombiesInRow == 0 && currentState instanceof Shooting) currentState.change(obj);
         else if(zombiesInRow > 0 && currentState instanceof Standing) currentState.change(obj);
+
         if(currentState instanceof Shooting) {
             shoot_counter++;
             if(shoot_counter == (int)(1/shoot_speed)) {

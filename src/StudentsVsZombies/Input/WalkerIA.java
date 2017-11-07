@@ -12,6 +12,8 @@ import StudentsVsZombies.State.Walking;
 
 public class WalkerIA extends Input {
     private Game game;
+    private int eatCounter = 0;
+    private double eatSpeed = 0.05;
 
     public WalkerIA copy(){ return new WalkerIA(game); }
 
@@ -23,17 +25,29 @@ public class WalkerIA extends Input {
         Spawnable obj = (Spawnable) o;
         State currentState = obj.state;
 
-        if(obj.hp <= 0) { currentState.die(obj, game); System.out.println("Zombie is ded men."); }
+        if(obj.hp <= 0) { currentState.die(obj, game); }
 
         List<Spawnable> cell = obj.getListOfObjects();
         boolean foundPlant = false;
         for(Spawnable other : cell) {
             if(other.getBreed() == game.green_breed || other.getBreed() == game.blue_breed || other.getBreed() == game.sunflower_breed) {
                     foundPlant = true;
-                    System.out.println("Zombie is eating.");
             }
         }
+
+        System.out.println(foundPlant ? "Found plant" : "Not found plant");
         if(foundPlant && currentState instanceof Walking) { currentState.change(obj); }
         if(!foundPlant && currentState instanceof Eating) { currentState.change(obj); }
+
+        if(currentState instanceof Eating) {
+            eatCounter++;
+            if(eatCounter == (int) (1/eatSpeed)) {
+                for(Spawnable other : cell) if(other.getBreed() == game.green_breed || other.getBreed() == game.blue_breed || other.getBreed() == game.sunflower_breed) {
+                    other.hp -= obj.getBreed().getAttack();
+                    System.out.println(other.hp);
+                }
+                eatCounter = 0;
+            }
+        }
     }
 }

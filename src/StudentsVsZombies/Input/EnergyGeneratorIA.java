@@ -2,6 +2,8 @@ package StudentsVsZombies.Input;
 
 import StudentsVsZombies.Game;
 import StudentsVsZombies.GameObject;
+import StudentsVsZombies.Spawnable;
+import StudentsVsZombies.State.State;
 
 public class EnergyGeneratorIA extends Input {
     private Game game;
@@ -15,8 +17,14 @@ public class EnergyGeneratorIA extends Input {
         counter = counterInterval - 1;
     }
 
-    public void update(GameObject obj, Boolean clicked) {
+    public void update(GameObject o, Boolean clicked) {
+        Spawnable obj = (Spawnable) o;
+        State currentState = obj.state;
+
         int oldCounter = counter;
+
+        if (obj.hp <= 0) { currentState.die(obj, game); }
+
         counter = (counter + counterInterval - 1) % counterInterval;
         if(counter > oldCounter) {
            game.gainEnergy();

@@ -49,5 +49,7 @@ public class Breed {
        return monster;
     }
 
+    public int getAttack() { return attack; }
+
     public ArrayList<ArrayList<BufferedImage>> getSprites(){ return sprites; }
 }

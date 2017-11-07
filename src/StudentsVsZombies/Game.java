@@ -78,6 +78,7 @@ public class Game implements Runnable {
     private class MouseControl extends MouseAdapter {
         public void mouseClicked(MouseEvent e){
             click = e.getPoint();
+            Object source = e.getSource();
             System.out.println(click.x + " " + click.y);
         }
         public void mouseMoved(MouseEvent e){}
@@ -175,7 +176,7 @@ public class Game implements Runnable {
 
     private void update(){
         bufferStrategy.getDrawGraphics().clearRect(0, 0, WIDTH, HEIGHT);
-        for(GameObject obj: dying) objects.remove(obj);
+        for(GameObject obj: dying) { objects.remove(obj); grid.remove(obj, grid.get_cell(new Point(obj.x_, obj.y_))); }
         for(GameObject obj: borning) objects.add(obj);
         dying.clear();
         borning.clear();
