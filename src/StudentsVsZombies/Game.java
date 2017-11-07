@@ -27,6 +27,7 @@ public class Game implements Runnable {
     private Grid grid;
     private GameObject holding;
     private Point click;
+    public int energyAmount = 0;
     public Breed zombie_breed;
     public Breed green_breed;
     public Breed blue_breed;
@@ -146,7 +147,11 @@ public class Game implements Runnable {
         sunflower_breed = new Breed(100, 10, sunflower, scale, new PlantPhysics(), new EnergyGeneratorIA(this), new Standing());
 
         bulletPrototype = new Prototype("gfx/sheets/green-bulletx"+scale+".png", scale, new BulletPhysics(), new EmptyInput(), 10, 10); // colocar imagem da bullet x
-        energyPrototype = new Prototype("gfx/sheets/sunx"+scale+".png", scale, new EnergyPhysics(), new EmptyInput(), 10, 10); // Colocar animacao da energia
+        energyPrototype = new Prototype("gfx/sheets/sunx"+scale+".png", scale, new EnergyPhysics(), new EnergyClick(this), 10, 10); // Colocar animacao da energia
+
+        GameObject display1 = new GameObject(new Point(41,72), new StaticGraphics(numbers[0]), new EmptyPhysics(), new EnergyDisplayIA(this, 1), numbers[0].getWidth(), numbers[0].getHeight());
+        GameObject display2 = new GameObject(new Point(41 - (numbers[0].getWidth() + 3),72), new StaticGraphics(numbers[0]), new EmptyPhysics(), new EnergyDisplayIA(this, 2), numbers[0].getWidth(), numbers[0].getHeight());
+        GameObject display3 = new GameObject(new Point(41 - 2*(numbers[0].getWidth() + 3),72), new StaticGraphics(numbers[0]), new EmptyPhysics(), new EnergyDisplayIA(this, 3), numbers[0].getWidth(), numbers[0].getHeight());
         //GameObject zero = new GameObject(new Point(0,0), new StaticGraphics(numbers[0]), new PlantPhysics(), new Idle() , 5*scale, 3*scale);
         //objects.add(zero);
         for (int i = 0 ; i < 5 ; ++i) {
@@ -157,11 +162,15 @@ public class Game implements Runnable {
         objects.add(zombie_breed.spawn(new Point (1,8), grid));
         //objects.add(bulletPrototype.create(new Point(200, 200))); // sun and bullet creation example
         objects.add(energyPrototype.create(new Point(100, 100)));
+        objects.add(display1);
+        objects.add(display2);
+        objects.add(display3);
 
     }
 
-    public void generateEnergy() {
+    public void gainEnergy() {
         System.out.println("Gerou. Top.");
+        energyAmount += 5;
     }
 
     private void update(){

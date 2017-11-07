@@ -19,7 +19,7 @@ public class EnergyGeneratorIA extends Input {
         int oldCounter = counter;
         counter = (counter + counterInterval - 1) % counterInterval;
         if(counter > oldCounter) {
-           game.generateEnergy();
+           game.gainEnergy();
         }
     }
 }

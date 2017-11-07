@@ -1,8 +1,17 @@
 package StudentsVsZombies.Input;
 
+import StudentsVsZombies.Game;
 import StudentsVsZombies.GameObject;
 
 public class EnergyClick extends Input {
-    public void update(GameObject obj, Boolean clicked){}
-    public Input copy() { return new EnergyClick(); }
+    private Game game;
+
+    public EnergyClick(Game game) { this.game = game; }
+
+    public void update(GameObject obj, Boolean clicked){
+        if(!clicked) {
+            game.gainEnergy();
+        }
+    }
+    public Input copy() { return new EnergyClick(game); }
 }
