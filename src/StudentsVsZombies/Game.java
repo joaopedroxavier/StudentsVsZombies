@@ -21,7 +21,7 @@ import java.util.HashSet;
 import java.util.TreeSet;
 
 public class Game implements Runnable {
-    private ArrayList<GameObject> objects;
+    public ArrayList<GameObject> objects;
     private ArrayList<GameObject> dying;
     private ArrayList<GameObject> borning;
     private Grid grid;
@@ -76,16 +76,21 @@ public class Game implements Runnable {
     }
 
     private class MouseControl extends MouseAdapter {
-        public void mouseClicked(MouseEvent e){
+        public void mouseClicked(MouseEvent e) {
             click = e.getPoint();
             Object source = e.getSource();
             System.out.println(click.x + " " + click.y);
+            for (GameObject obj : objects) {
+                if (obj.x_ <= click.getX() && obj.x_ + obj.getWidth() >= click.getX() && obj.y_ <= click.getY() && obj.y_ + obj.getHeight() >= click.getY()) {
+                    obj.in.update(obj, true);
+                }
+            }
         }
         public void mouseMoved(MouseEvent e){}
         public void mouseDragged(MouseEvent e){}
     }
 
-     public void run(){
+    public void run(){
         long beginLoopTime;
         long endLoopTime;
         long deltaLoop;
@@ -113,42 +118,42 @@ public class Game implements Runnable {
         borning = new ArrayList<>();
         numbers = new BufferedImage[10];
         try {
-        	File file = new File("gfx/sheets/numbersx" + scale + ".png");
-        	BufferedImage img = ImageIO.read(file);
-        	for (int i = 0 ; i < 10 ; ++i) {
-        		numbers[i] = img.getSubimage(3*scale*i, 0, 3*scale, 5*scale);
-        	}
+            File file = new File("gfx/sheets/numbersx" + scale + ".png");
+            BufferedImage img = ImageIO.read(file);
+            for (int i = 0 ; i < 10 ; ++i) {
+                numbers[i] = img.getSubimage(3*scale*i, 0, 3*scale, 5*scale);
+            }
         } catch (IOException e) { e.printStackTrace(); }
         File file = new File("gfx/sheets/backgroundx"+scale+".png");
-		try {
-			BufferedImage img = ImageIO.read(file);
-	        StaticGraphics background = new StaticGraphics(img);
-	        GameObject bg = new GameObject(new Point(0,0), background, new EmptyPhysics(), new EmptyInput(), 112*scale,144*scale);
-	        objects.add(bg);
-		} catch (IOException e) { System.out.println("Background file not found."); }
-		
-		// build list of animation sheets relative to the entities
-		ArrayList<String> greens = new ArrayList<>();
-		ArrayList<String> blues = new ArrayList<>();
-		ArrayList<String> sun = new ArrayList<>();
-		ArrayList<String> sunflower = new ArrayList<>();
-		ArrayList<String> zombies = new ArrayList<>();
-		greens.add("gfx/sheets/plant-greenx" + scale +".png");
-		greens.add("gfx/sheets/plant-green-shootingx" + scale +".png");
-		blues.add("gfx/sheets/plant-bluex" + scale +".png");
-		blues.add("gfx/sheets/plant-blue-shootingx" + scale +".png");
-		sun.add("gfx/sheets/sunx"+scale+".png");
-		sunflower.add("gfx/sheets/sunflowerx"+scale+".png");
-		zombies.add("gfx/sheets/zombiex"+scale+".png");
-		zombies.add("gfx/sheets/zombie-eatingx"+scale+".png");
-		
+        try {
+            BufferedImage img = ImageIO.read(file);
+            StaticGraphics background = new StaticGraphics(img);
+            GameObject bg = new GameObject(new Point(0,0), background, new EmptyPhysics(), new EmptyInput(), 112*scale,144*scale);
+            objects.add(bg);
+        } catch (IOException e) { System.out.println("Background file not found."); }
+
+        // build list of animation sheets relative to the entities
+        ArrayList<String> greens = new ArrayList<>();
+        ArrayList<String> blues = new ArrayList<>();
+        ArrayList<String> sun = new ArrayList<>();
+        ArrayList<String> sunflower = new ArrayList<>();
+        ArrayList<String> zombies = new ArrayList<>();
+        greens.add("gfx/sheets/plant-greenx" + scale +".png");
+        greens.add("gfx/sheets/plant-green-shootingx" + scale +".png");
+        blues.add("gfx/sheets/plant-bluex" + scale +".png");
+        blues.add("gfx/sheets/plant-blue-shootingx" + scale +".png");
+        sun.add("gfx/sheets/sunx"+scale+".png");
+        sunflower.add("gfx/sheets/sunflowerx"+scale+".png");
+        zombies.add("gfx/sheets/zombiex"+scale+".png");
+        zombies.add("gfx/sheets/zombie-eatingx"+scale+".png");
+
         green_breed = new Breed(100, 10, greens, scale, new PlantPhysics(), new PlantIA(this), new Standing());
         blue_breed = new Breed(100, 10, blues, scale, new PlantPhysics(), new PlantIA(this), new Standing());
         zombie_breed = new Breed(700,10, zombies, scale, new WalkerPhysics(), new WalkerIA(this), new Walking());
         sunflower_breed = new Breed(100, 10, sunflower, scale, new PlantPhysics(), new EnergyGeneratorIA(this), new Standing());
 
-        bulletPrototype = new Prototype("gfx/sheets/green-bulletx"+scale+".png", scale, new BulletPhysics(), new EmptyInput(), 10, 10); // colocar imagem da bullet x
-        energyPrototype = new Prototype("gfx/sheets/sunx"+scale+".png", scale, new EnergyPhysics(), new EnergyClick(this), 10, 10); // Colocar animacao da energia
+        bulletPrototype = new Prototype("gfx/sheets/green-bulletx"+scale+".png", scale, new BulletPhysics(), new EmptyInput(), 50, 50); // colocar imagem da bullet x
+        energyPrototype = new Prototype("gfx/sheets/sunx"+scale+".png", scale, new EnergyPhysics(), new EnergyClick(this), 50, 50); // Colocar animacao da energia
 
         GameObject display1 = new GameObject(new Point(41,72), new StaticGraphics(numbers[0]), new EmptyPhysics(), new EnergyDisplayIA(this, 1), numbers[0].getWidth(), numbers[0].getHeight());
         GameObject display2 = new GameObject(new Point(41 - (numbers[0].getWidth() + 3),72), new StaticGraphics(numbers[0]), new EmptyPhysics(), new EnergyDisplayIA(this, 2), numbers[0].getWidth(), numbers[0].getHeight());
@@ -162,7 +167,6 @@ public class Game implements Runnable {
         }
         objects.add(zombie_breed.spawn(new Point (1,8), grid));
         //objects.add(bulletPrototype.create(new Point(200, 200))); // sun and bullet creation example
-        objects.add(energyPrototype.create(new Point(100, 100)));
         objects.add(display1);
         objects.add(display2);
         objects.add(display3);
@@ -170,7 +174,6 @@ public class Game implements Runnable {
     }
 
     public void gainEnergy() {
-        System.out.println("Gerou. Top.");
         energyAmount += 5;
     }
 
@@ -180,7 +183,7 @@ public class Game implements Runnable {
         for(GameObject obj: borning) objects.add(obj);
         dying.clear();
         borning.clear();
-        for(GameObject obj : objects){ obj.py.update(obj); obj.gr.update(obj, this); obj.in.update(obj, true); }
+        for(GameObject obj : objects) { obj.py.update(obj); obj.gr.update(obj, this); obj.in.update(obj, false); }
         bufferStrategy.show();
     }
 
@@ -190,7 +193,7 @@ public class Game implements Runnable {
     public void addObject(GameObject obj){ borning.add(obj); }
 
     public static void main(String [] args){
-         Game game = new Game();
-         new Thread(game).run();
+        Game game = new Game();
+        new Thread(game).run();
     }
 }

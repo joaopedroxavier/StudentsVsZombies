@@ -26,6 +26,8 @@ public class PlantIA extends Input {
         Spawnable obj = (Spawnable) o;
         State currentState = obj.state;
 
+        if(clicked) { System.out.println("Clicked a plant!"); }
+
         if (obj.hp <= 0) { currentState.die(obj, game); }
 
         Point limits = obj.getLimits();

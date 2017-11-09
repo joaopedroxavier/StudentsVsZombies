@@ -15,7 +15,7 @@ import java.util.ArrayList;
 public class Breed {
     private int totalHp;
     private int attack;
-    private int width = 10, height = 10;
+    private int width = 50, height = 50;
     private Physics py;
     private Input in;
     private State base_state;

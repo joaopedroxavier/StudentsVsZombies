@@ -2,8 +2,12 @@ package StudentsVsZombies.Input;
 
 import StudentsVsZombies.Game;
 import StudentsVsZombies.GameObject;
+import StudentsVsZombies.Physics.EnergyPhysics;
+import StudentsVsZombies.Prototype;
 import StudentsVsZombies.Spawnable;
 import StudentsVsZombies.State.State;
+
+import java.awt.*;
 
 public class EnergyGeneratorIA extends Input {
     private Game game;
@@ -27,7 +31,7 @@ public class EnergyGeneratorIA extends Input {
 
         counter = (counter + counterInterval - 1) % counterInterval;
         if(counter > oldCounter) {
-           game.gainEnergy();
+            game.addObject(game.energyPrototype.create(new Point(obj.x_, obj.y_)));
         }
     }
 }

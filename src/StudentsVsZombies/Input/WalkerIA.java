@@ -25,6 +25,8 @@ public class WalkerIA extends Input {
         Spawnable obj = (Spawnable) o;
         State currentState = obj.state;
 
+        if(clicked) { System.out.println("Clicked a zombie!"); }
+
         if(obj.hp <= 0) { currentState.die(obj, game); }
 
         List<Spawnable> cell = obj.getListOfObjects();
@@ -35,7 +37,6 @@ public class WalkerIA extends Input {
             }
         }
 
-        System.out.println(foundPlant ? "Found plant" : "Not found plant");
         if(foundPlant && currentState instanceof Walking) { currentState.change(obj); }
         if(!foundPlant && currentState instanceof Eating) { currentState.change(obj); }
 
@@ -44,7 +45,6 @@ public class WalkerIA extends Input {
             if(eatCounter == (int) (1/eatSpeed)) {
                 for(Spawnable other : cell) if(other.getBreed() == game.green_breed || other.getBreed() == game.blue_breed || other.getBreed() == game.sunflower_breed) {
                     other.hp -= obj.getBreed().getAttack();
-                    System.out.println(other.hp);
                 }
                 eatCounter = 0;
             }

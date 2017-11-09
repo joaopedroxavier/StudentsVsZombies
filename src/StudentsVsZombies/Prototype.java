@@ -15,7 +15,7 @@ import java.util.ArrayList;
 public class Prototype {
     GameObject original;
 
-    Prototype(String spritesheet_path, int scale, Physics py, Input in, int width , int height){
+    public Prototype(String spritesheet_path, int scale, Physics py, Input in, int width , int height){
         try {
 		        ArrayList<BufferedImage> spr = new ArrayList<>();
 	        	File file = new File(spritesheet_path);

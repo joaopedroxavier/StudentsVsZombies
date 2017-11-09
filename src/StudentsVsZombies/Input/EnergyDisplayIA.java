@@ -2,7 +2,6 @@ package StudentsVsZombies.Input;
 
 import StudentsVsZombies.Game;
 import StudentsVsZombies.GameObject;
-import StudentsVsZombies.Graphics.Graphics;
 import StudentsVsZombies.Graphics.StaticGraphics;
 
 public class EnergyDisplayIA extends Input {
@@ -10,7 +9,7 @@ public class EnergyDisplayIA extends Input {
     private int magnitude;
     private int energyAmount = 0;
 
-    public EnergyDisplayIA(Game game, int m) { this.game = game; magnitude = m; System.out.println("energyDisplay created."); }
+    public EnergyDisplayIA(Game game, int m) { this.game = game; magnitude = m; }
 
     public EnergyDisplayIA copy() { return new EnergyDisplayIA(game, magnitude); }
 
