@@ -18,6 +18,7 @@ import java.io.File;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.concurrent.ThreadLocalRandom;
 import java.util.HashSet;
 import java.util.TreeSet;
 
@@ -46,6 +47,7 @@ public class Game implements Runnable {
 
     private int scale = 4;
     private int WIDTH = 144, HEIGHT = 112;
+    private int energyCounter = 0;
     private boolean running = true;
     private long desiredFPS = 60;
     private long desiredDeltaLoop = (1000*1000*1000)/desiredFPS;
@@ -194,7 +196,7 @@ public class Game implements Runnable {
 
         green_bulletPrototype = new Prototype("gfx/sheets/green-bulletx"+scale+".png", scale, new BulletPhysics(this, green_breed), new EmptyInput(), 50, 50); // colocar imagem da bullet x
         blue_bulletPrototype = new Prototype("gfx/sheets/green-bulletx"+scale+".png", scale, new BulletPhysics(this, blue_breed), new EmptyInput(), 50, 50); // colocar imagem da bullet x
-        energyPrototype = new Prototype("gfx/sheets/sunx"+scale+".png", scale, new EnergyPhysics(), new EnergyClick(this), 50, 50); // Colocar animacao da energia
+        energyPrototype = new Prototype("gfx/sheets/sunx"+scale+".png", scale, new EnergyPhysics(this), new EnergyClick(this), 50, 50); // Colocar animacao da energia
 
         GameObject display1 = new GameObject(new Point(41,72), new StaticGraphics(numbers[0]), new EmptyPhysics(), new EnergyDisplayIA(this, 1), numbers[0].getWidth(), numbers[0].getHeight());
         GameObject display2 = new GameObject(new Point(41 - (numbers[0].getWidth() + 3),72), new StaticGraphics(numbers[0]), new EmptyPhysics(), new EnergyDisplayIA(this, 2), numbers[0].getWidth(), numbers[0].getHeight());
@@ -220,6 +222,9 @@ public class Game implements Runnable {
         objects.add(greenCard);
         objects.add(blueCard);
         objects.add(sunCard);
+
+        //objects.add(energyPrototype.create(new Point(50, 100))); //Apenas para teste do EnergyPhysics
+
     }
 
     public void gainEnergy() {
@@ -227,6 +232,13 @@ public class Game implements Runnable {
     }
 
     private void update() {
+        energyCounter++;
+        if(energyCounter >= 600) {
+            int randomNum = ThreadLocalRandom.current().nextInt(50, 500);
+            objects.add(energyPrototype.create(new Point(randomNum, 50)));
+            energyCounter=0;
+        }
+
         bufferStrategy.getDrawGraphics().clearRect(0, 0, WIDTH, HEIGHT);
         for (GameObject obj : dying) {
             objects.remove(obj);
