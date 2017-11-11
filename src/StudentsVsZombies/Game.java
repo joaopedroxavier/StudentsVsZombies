@@ -35,7 +35,8 @@ public class Game implements Runnable {
     public Breed sunflower_breed;
     public Breed sun_breed;
     public Prototype energyPrototype;
-    public Prototype bulletPrototype;
+    public Prototype green_bulletPrototype;
+    public Prototype blue_bulletPrototype;
     public GameObject sunCard;
     public GameObject blueCard;
     public GameObject greenCard;
@@ -150,7 +151,7 @@ public class Game implements Runnable {
     }
 
     private void construct_world(){
-        grid = new Grid(0, 128-16, 16*scale, 5, 9);
+        grid = new Grid(0, 128-16, 16*scale, 6, 10);
         objects = new ArrayList<>();
         dying = new ArrayList<>();
         borning = new ArrayList<>();
@@ -185,12 +186,13 @@ public class Game implements Runnable {
         zombies.add("gfx/sheets/zombiex"+scale+".png");
         zombies.add("gfx/sheets/zombie-eatingx"+scale+".png");
 
-        green_breed = new Breed(100, 10, greens, scale, new PlantPhysics(), new PlantIA(this), new Standing());
-        blue_breed = new Breed(100, 10, blues, scale, new PlantPhysics(), new PlantIA(this), new Standing());
-        zombie_breed = new Breed(700,10, zombies, scale, new WalkerPhysics(), new WalkerIA(this), new Walking());
+        green_breed = new Breed(100, 100, greens, scale, new PlantPhysics(), new PlantIA(this), new Standing());
+        blue_breed = new Breed(100, 300, blues, scale, new PlantPhysics(), new PlantIA(this), new Standing());
+        zombie_breed = new Breed(700,10, zombies, scale, new WalkerPhysics(this), new WalkerIA(this), new Walking());
         sunflower_breed = new Breed(100, 10, sunflower, scale, new PlantPhysics(), new EnergyGeneratorIA(this), new Standing());
 
-        bulletPrototype = new Prototype("gfx/sheets/green-bulletx"+scale+".png", scale, new BulletPhysics(), new EmptyInput(), 50, 50); // colocar imagem da bullet x
+        green_bulletPrototype = new Prototype("gfx/sheets/green-bulletx"+scale+".png", scale, new BulletPhysics(this, green_breed), new EmptyInput(), 50, 50); // colocar imagem da bullet x
+        blue_bulletPrototype = new Prototype("gfx/sheets/green-bulletx"+scale+".png", scale, new BulletPhysics(this, blue_breed), new EmptyInput(), 50, 50); // colocar imagem da bullet x
         energyPrototype = new Prototype("gfx/sheets/sunx"+scale+".png", scale, new EnergyPhysics(), new EnergyClick(this), 50, 50); // Colocar animacao da energia
 
         GameObject display1 = new GameObject(new Point(41,72), new StaticGraphics(numbers[0]), new EmptyPhysics(), new EnergyDisplayIA(this, 1), numbers[0].getWidth(), numbers[0].getHeight());
