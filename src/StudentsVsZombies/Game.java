@@ -26,7 +26,6 @@ public class Game implements Runnable {
     private ArrayList<GameObject> dying;
     private ArrayList<GameObject> borning;
     private Grid grid;
-    private GameObject holding;
     private Point click;
     public int energyAmount = 0;
     public Breed zombie_breed;
@@ -37,9 +36,10 @@ public class Game implements Runnable {
     public Prototype energyPrototype;
     public Prototype green_bulletPrototype;
     public Prototype blue_bulletPrototype;
-    public GameObject sunCard;
-    public GameObject blueCard;
-    public GameObject greenCard;
+    private Card sunCard;
+    private Card blueCard;
+    private Card greenCard;
+    private Card holding;
 
     public BufferedImage[] numbers;
 
@@ -98,8 +98,9 @@ public class Game implements Runnable {
             System.out.println(click.x + " " + click.y);
             for (GameObject obj : objects) {
                 boolean clickInsideObject = (click != null && obj.x_ <= click.getX() && obj.x_ + obj.getWidth() >= click.getX() && obj.y_ <= click.getY() && obj.y_ + obj.getHeight() >= click.getY());
-                if((obj == greenCard || obj == blueCard || obj == sunCard) && clickInsideObject) {
-                    holding = obj;
+                if((obj instanceof Card) && clickInsideObject) {
+                    Card myCard = (Card) obj;
+                    holding = myCard;
                     System.out.println("Holding!!");
                 }
             }
@@ -115,7 +116,7 @@ public class Game implements Runnable {
                 System.out.println(grid.get_cell(click).x + " " + grid.get_cell(click).y);
                 Point cellClick = new Point(grid.get_cell(click).y, grid.get_cell(click).x);
 
-                Breed breed = (holding == greenCard) ? green_breed : ((holding == blueCard) ? blue_breed : sunflower_breed);
+                Breed breed = holding.getBreed();
                 List<Spawnable> cell = grid.getListOfObjects(grid.get_cell(click));
                 boolean foundPlant = false;
                 for(Spawnable other : cell) {
@@ -199,9 +200,9 @@ public class Game implements Runnable {
         GameObject display2 = new GameObject(new Point(41 - (numbers[0].getWidth() + 3),72), new StaticGraphics(numbers[0]), new EmptyPhysics(), new EnergyDisplayIA(this, 2), numbers[0].getWidth(), numbers[0].getHeight());
         GameObject display3 = new GameObject(new Point(41 - 2*(numbers[0].getWidth() + 3),72), new StaticGraphics(numbers[0]), new EmptyPhysics(), new EnergyDisplayIA(this, 3), numbers[0].getWidth(), numbers[0].getHeight());
 
-        sunCard = new GameObject(new Point(90,40), new StaticGraphics(numbers[0]), new EmptyPhysics(), new CardClick(this), numbers[0].getWidth(), numbers[0].getHeight());
-        greenCard = new GameObject(new Point(150,40), new StaticGraphics(numbers[0]), new EmptyPhysics(), new CardClick(this), numbers[0].getWidth(), numbers[0].getHeight());
-        blueCard = new GameObject(new Point(210,40), new StaticGraphics(numbers[0]), new EmptyPhysics(), new CardClick(this), numbers[0].getWidth(), numbers[0].getHeight());
+        sunCard = new Card(sunflower_breed, new GameObject(new Point(90,40), new StaticGraphics(numbers[0]), new EmptyPhysics(), new CardClick(this), numbers[0].getWidth(), numbers[0].getHeight()));
+        greenCard = new Card(green_breed, new GameObject(new Point(150,40), new StaticGraphics(numbers[0]), new EmptyPhysics(), new CardClick(this), numbers[0].getWidth(), numbers[0].getHeight()));
+        blueCard = new Card(blue_breed, new GameObject(new Point(210,40), new StaticGraphics(numbers[0]), new EmptyPhysics(), new CardClick(this), numbers[0].getWidth(), numbers[0].getHeight()));
 
         //GameObject zero = new GameObject(new Point(0,0), new StaticGraphics(numbers[0]), new PlantPhysics(), new Idle() , 5*scale, 3*scale);
         //objects.add(zero);

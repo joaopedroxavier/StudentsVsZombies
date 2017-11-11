@@ -19,7 +19,6 @@ public class BulletPhysics extends Physics {
         o.x_ += speed;
         Grid grid = game.getGrid();
         Point myCell = grid.get_cell(new Point(o.x_, o.y_));
-        System.out.println(myCell.x + " " + myCell.y);
         if(myCell.x >= 9) {
             game.removeObject(o);
         }
