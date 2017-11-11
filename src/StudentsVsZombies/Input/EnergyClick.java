@@ -16,7 +16,7 @@ public class EnergyClick extends Input {
             game.removeObject(obj);
         }
         count++;
-        if(count >= 600) { game.removeObject(obj); }
+        if(count >= 300) { game.removeObject(obj); }
     }
     public Input copy() { return new EnergyClick(game); }
 }

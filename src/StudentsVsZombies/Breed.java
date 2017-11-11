@@ -16,6 +16,7 @@ public class Breed {
     private int totalHp;
     private int attack;
     private int width = 50, height = 50;
+    private int cost = 100000;
     private Physics py;
     private Input in;
     private State base_state;
@@ -50,6 +51,8 @@ public class Breed {
     }
 
     public int getAttack() { return attack; }
+
+    public int getCost() { return cost; }
 
     public ArrayList<ArrayList<BufferedImage>> getSprites(){ return sprites; }
 }

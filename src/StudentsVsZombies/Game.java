@@ -28,7 +28,7 @@ public class Game implements Runnable {
     private ArrayList<GameObject> borning;
     private Grid grid;
     private Point click;
-    public int energyAmount = 0;
+    public int energyAmount = 100;
     public Breed zombie_breed;
     public Breed green_breed;
     public Breed blue_breed;
@@ -43,6 +43,9 @@ public class Game implements Runnable {
     private Card holding;
 
     public BufferedImage[] numbers;
+    private BufferedImage greenPlantSprite = null;
+    private BufferedImage bluePlantSprite = null;
+    private BufferedImage sunflowerPlantSprite = null;
 
 
     private int scale = 4;
@@ -69,7 +72,9 @@ public class Game implements Runnable {
 
         panel.add(canvas);
 
-        canvas.addMouseListener(new MouseControl());
+        MouseControl mouse = new MouseControl();
+        canvas.addMouseListener(mouse);
+        canvas.addMouseMotionListener(mouse);
 
         frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         frame.pack();
@@ -93,6 +98,11 @@ public class Game implements Runnable {
         }
 
         public void mouseDragged(MouseEvent e) {
+            click = new Point(e.getPoint());
+            if(holding != null) {
+                holding.x_ = click.x - holding.getWidth() / 2;
+                holding.y_ = click.y - holding.getHeight() / 2;
+            }
         }
 
         public void mousePressed(MouseEvent e) {
@@ -102,8 +112,12 @@ public class Game implements Runnable {
                 boolean clickInsideObject = (click != null && obj.x_ <= click.getX() && obj.x_ + obj.getWidth() >= click.getX() && obj.y_ <= click.getY() && obj.y_ + obj.getHeight() >= click.getY());
                 if((obj instanceof Card) && clickInsideObject) {
                     Card myCard = (Card) obj;
-                    holding = myCard;
-                    System.out.println("Holding!!");
+                    if(myCard.getCost() <= energyAmount) {
+                        holding = myCard.copy();
+                        holding.gr = obj.gr.copy();
+                        holding.gr.setAlpha((float) 0.5);
+                        System.out.println("Holding!!");
+                    }
                 }
             }
         }
@@ -112,7 +126,7 @@ public class Game implements Runnable {
             click = new Point(e.getPoint());
             System.out.println(click.x + " " + click.y);
             boolean clickInsideObject = (click != null && grid.x_ <= click.getX() && grid.x_ + grid.getWidth() >= click.getX() && grid.y_ <= click.getY() && grid.y_ + grid.getHeight() >= click.getY());
-            if(holding != null) {
+            if(holding != null && clickInsideObject) {
 
                 System.out.println("Releasing!!");
                 System.out.println(grid.get_cell(click).x + " " + grid.get_cell(click).y);
@@ -126,7 +140,10 @@ public class Game implements Runnable {
                         foundPlant = true;
                     }
                 }
-                if(!foundPlant && breed != null) { addObject(breed.spawn(cellClick, grid)); }
+                if(!foundPlant && breed != null) {
+                    energyAmount -= holding.getCost();
+                    addObject(breed.spawn(cellClick, grid));
+                }
             }
             holding = null;
         }
@@ -159,20 +176,28 @@ public class Game implements Runnable {
         dying = new ArrayList<>();
         borning = new ArrayList<>();
         numbers = new BufferedImage[10];
+
         try {
             File file = new File("gfx/sheets/numbersx" + scale + ".png");
             BufferedImage img = ImageIO.read(file);
             for (int i = 0 ; i < 10 ; ++i) {
                 numbers[i] = img.getSubimage(3*scale*i, 0, 3*scale, 5*scale);
             }
-        } catch (IOException e) { e.printStackTrace(); }
-        File file = new File("gfx/sheets/backgroundx"+scale+".png");
-        try {
-            BufferedImage img = ImageIO.read(file);
-            StaticGraphics background = new StaticGraphics(img);
+            File bgFile = new File("gfx/sheets/backgroundx"+scale+".png");
+            BufferedImage bgImg = ImageIO.read(bgFile);
+            StaticGraphics background = new StaticGraphics(bgImg);
             GameObject bg = new GameObject(new Point(0,0), background, new EmptyPhysics(), new EmptyInput(), 112*scale,144*scale);
             objects.add(bg);
-        } catch (IOException e) { System.out.println("Background file not found."); }
+            File greenPlantFile = new File("gfx/sheets/plant-greenx"+scale+".png");
+            BufferedImage greenImg = ImageIO.read(greenPlantFile);
+            greenPlantSprite = ((greenImg.getSubimage(0, 0, 16*scale, 16*scale)));
+            File bluePlantFile = new File("gfx/sheets/plant-bluex"+scale+".png");
+            BufferedImage blueImg = ImageIO.read(bluePlantFile);
+            bluePlantSprite = ((blueImg.getSubimage(0, 0, 16*scale, 16*scale)));
+            File sunflowerPlantFile = new File("gfx/sheets/sunflowerx"+scale+".png");
+            BufferedImage sunImg = ImageIO.read(sunflowerPlantFile);
+            sunflowerPlantSprite = ((sunImg.getSubimage(0, 0, 16*scale, 16*scale)));
+        } catch (IOException e) { e.printStackTrace(); }
 
         // build list of animation sheets relative to the entities
         ArrayList<String> greens = new ArrayList<>();
@@ -202,17 +227,14 @@ public class Game implements Runnable {
         GameObject display2 = new GameObject(new Point(41 - (numbers[0].getWidth() + 3),72), new StaticGraphics(numbers[0]), new EmptyPhysics(), new EnergyDisplayIA(this, 2), numbers[0].getWidth(), numbers[0].getHeight());
         GameObject display3 = new GameObject(new Point(41 - 2*(numbers[0].getWidth() + 3),72), new StaticGraphics(numbers[0]), new EmptyPhysics(), new EnergyDisplayIA(this, 3), numbers[0].getWidth(), numbers[0].getHeight());
 
-        sunCard = new Card(sunflower_breed, new GameObject(new Point(90,40), new StaticGraphics(numbers[0]), new EmptyPhysics(), new CardClick(this), numbers[0].getWidth(), numbers[0].getHeight()));
-        greenCard = new Card(green_breed, new GameObject(new Point(150,40), new StaticGraphics(numbers[0]), new EmptyPhysics(), new CardClick(this), numbers[0].getWidth(), numbers[0].getHeight()));
-        blueCard = new Card(blue_breed, new GameObject(new Point(210,40), new StaticGraphics(numbers[0]), new EmptyPhysics(), new CardClick(this), numbers[0].getWidth(), numbers[0].getHeight()));
+        try {
+            sunCard = new Card(sunflower_breed, new GameObject(new Point(63, 0), new StaticGraphics(sunflowerPlantSprite), new EmptyPhysics(), new CardClick(this), sunflowerPlantSprite.getWidth(), sunflowerPlantSprite.getHeight()),50);
+            greenCard = new Card(green_breed, new GameObject(new Point(63 + (sunflowerPlantSprite.getWidth() - 1),0), new StaticGraphics(greenPlantSprite), new EmptyPhysics(), new CardClick(this), greenPlantSprite.getWidth(), greenPlantSprite.getHeight()), 100);
+            blueCard = new Card(blue_breed, new GameObject(new Point(63 + (sunflowerPlantSprite.getWidth() + 1) * 2, 0), new StaticGraphics(bluePlantSprite), new EmptyPhysics(), new CardClick(this), bluePlantSprite.getWidth(), bluePlantSprite.getHeight()), 200);
+        } catch (Exception e) { e.printStackTrace(); }
 
         //GameObject zero = new GameObject(new Point(0,0), new StaticGraphics(numbers[0]), new PlantPhysics(), new Idle() , 5*scale, 3*scale);
         //objects.add(zero);
-        for (int i = 0 ; i < 5 ; ++i) {
-            objects.add(green_breed.spawn(new Point(i, 2), grid));
-            objects.add(blue_breed.spawn(new Point(i, 1), grid));
-            objects.add(sunflower_breed.spawn(new Point(i, 0), grid));
-        }
         objects.add(zombie_breed.spawn(new Point (1,8), grid));
         //objects.add(bulletPrototype.create(new Point(200, 200))); // sun and bullet creation example
         objects.add(display1);
@@ -228,7 +250,7 @@ public class Game implements Runnable {
     }
 
     public void gainEnergy() {
-        energyAmount += 5;
+        energyAmount += 20;
     }
 
     private void update() {
@@ -253,6 +275,9 @@ public class Game implements Runnable {
             obj.gr.update(obj, this);
             obj.in.update(obj, clickInsideObject);
         }
+
+        if(holding != null) holding.gr.update(holding, this);
+
         click = null;
         bufferStrategy.show();
     }
