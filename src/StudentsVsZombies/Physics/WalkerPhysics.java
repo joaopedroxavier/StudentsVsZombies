@@ -32,6 +32,10 @@ public class WalkerPhysics extends Physics {
                 grid.add(obj, myCell);
                 grid.remove(o, rightCell);
             }
+            if(o.x_ == 0) {
+                game.removeObject(o);
+                System.out.println("Game Over!!!"); //Trocar para chamar a função de Game Over!
+            }
         }
     }
 }
