@@ -50,7 +50,12 @@ public class PlantIA extends Input {
         if(currentState instanceof Shooting) {
             shoot_counter++;
             if(shoot_counter == (int)(1/shoot_speed)) {
-                game.addObject(game.bulletPrototype.create(new Point(obj.x_, obj.y_)));
+                if(obj.getBreed() == game.green_breed) {
+                    game.addObject(game.green_bulletPrototype.create(new Point(obj.x_, obj.y_)));
+                }
+                if(obj.getBreed() == game.blue_breed) {
+                    game.addObject(game.blue_bulletPrototype.create(new Point(obj.x_, obj.y_)));
+                }
                 shoot_counter = 0;
             }
         }
