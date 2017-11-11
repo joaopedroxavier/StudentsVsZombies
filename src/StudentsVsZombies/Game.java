@@ -17,6 +17,7 @@ import java.awt.image.BufferedImage;
 import java.io.File;
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.List;
 import java.util.HashSet;
 import java.util.TreeSet;
 
@@ -35,6 +36,10 @@ public class Game implements Runnable {
     public Breed sun_breed;
     public Prototype energyPrototype;
     public Prototype bulletPrototype;
+    public GameObject sunCard;
+    public GameObject blueCard;
+    public GameObject greenCard;
+
     public BufferedImage[] numbers;
 
 
@@ -77,17 +82,50 @@ public class Game implements Runnable {
 
     private class MouseControl extends MouseAdapter {
         public void mouseClicked(MouseEvent e) {
-            click = e.getPoint();
-            Object source = e.getSource();
+            click = new Point(e.getPoint());
+            System.out.println(click.x + " " + click.y);
+        }
+
+        public void mouseMoved(MouseEvent e) {
+        }
+
+        public void mouseDragged(MouseEvent e) {
+        }
+
+        public void mousePressed(MouseEvent e) {
+            click = new Point(e.getPoint());
             System.out.println(click.x + " " + click.y);
             for (GameObject obj : objects) {
-                if (obj.x_ <= click.getX() && obj.x_ + obj.getWidth() >= click.getX() && obj.y_ <= click.getY() && obj.y_ + obj.getHeight() >= click.getY()) {
-                    obj.in.update(obj, true);
+                boolean clickInsideObject = (click != null && obj.x_ <= click.getX() && obj.x_ + obj.getWidth() >= click.getX() && obj.y_ <= click.getY() && obj.y_ + obj.getHeight() >= click.getY());
+                if((obj == greenCard || obj == blueCard || obj == sunCard) && clickInsideObject) {
+                    holding = obj;
+                    System.out.println("Holding!!");
                 }
             }
         }
-        public void mouseMoved(MouseEvent e){}
-        public void mouseDragged(MouseEvent e){}
+
+        public void mouseReleased(MouseEvent e) {
+            click = new Point(e.getPoint());
+            System.out.println(click.x + " " + click.y);
+            boolean clickInsideObject = (click != null && grid.x_ <= click.getX() && grid.x_ + grid.getWidth() >= click.getX() && grid.y_ <= click.getY() && grid.y_ + grid.getHeight() >= click.getY());
+            if(holding != null) {
+
+                System.out.println("Releasing!!");
+                System.out.println(grid.get_cell(click).x + " " + grid.get_cell(click).y);
+                Point cellClick = new Point(grid.get_cell(click).y, grid.get_cell(click).x);
+
+                Breed breed = (holding == greenCard) ? green_breed : ((holding == blueCard) ? blue_breed : sunflower_breed);
+                List<Spawnable> cell = grid.getListOfObjects(grid.get_cell(click));
+                boolean foundPlant = false;
+                for(Spawnable other : cell) {
+                    if(other.getBreed() == green_breed || other.getBreed() == blue_breed || other.getBreed() == sunflower_breed) {
+                        foundPlant = true;
+                    }
+                }
+                if(!foundPlant && breed != null) { addObject(breed.spawn(cellClick, grid)); }
+            }
+            holding = null;
+        }
     }
 
     public void run(){
@@ -158,6 +196,11 @@ public class Game implements Runnable {
         GameObject display1 = new GameObject(new Point(41,72), new StaticGraphics(numbers[0]), new EmptyPhysics(), new EnergyDisplayIA(this, 1), numbers[0].getWidth(), numbers[0].getHeight());
         GameObject display2 = new GameObject(new Point(41 - (numbers[0].getWidth() + 3),72), new StaticGraphics(numbers[0]), new EmptyPhysics(), new EnergyDisplayIA(this, 2), numbers[0].getWidth(), numbers[0].getHeight());
         GameObject display3 = new GameObject(new Point(41 - 2*(numbers[0].getWidth() + 3),72), new StaticGraphics(numbers[0]), new EmptyPhysics(), new EnergyDisplayIA(this, 3), numbers[0].getWidth(), numbers[0].getHeight());
+
+        sunCard = new GameObject(new Point(90,40), new StaticGraphics(numbers[0]), new EmptyPhysics(), new CardClick(this), numbers[0].getWidth(), numbers[0].getHeight());
+        greenCard = new GameObject(new Point(150,40), new StaticGraphics(numbers[0]), new EmptyPhysics(), new CardClick(this), numbers[0].getWidth(), numbers[0].getHeight());
+        blueCard = new GameObject(new Point(210,40), new StaticGraphics(numbers[0]), new EmptyPhysics(), new CardClick(this), numbers[0].getWidth(), numbers[0].getHeight());
+
         //GameObject zero = new GameObject(new Point(0,0), new StaticGraphics(numbers[0]), new PlantPhysics(), new Idle() , 5*scale, 3*scale);
         //objects.add(zero);
         for (int i = 0 ; i < 5 ; ++i) {
@@ -171,19 +214,31 @@ public class Game implements Runnable {
         objects.add(display2);
         objects.add(display3);
 
+        objects.add(greenCard);
+        objects.add(blueCard);
+        objects.add(sunCard);
     }
 
     public void gainEnergy() {
         energyAmount += 5;
     }
 
-    private void update(){
+    private void update() {
         bufferStrategy.getDrawGraphics().clearRect(0, 0, WIDTH, HEIGHT);
-        for(GameObject obj: dying) { objects.remove(obj); grid.remove(obj, grid.get_cell(new Point(obj.x_, obj.y_))); }
-        for(GameObject obj: borning) objects.add(obj);
+        for (GameObject obj : dying) {
+            objects.remove(obj);
+            grid.remove(obj, grid.get_cell(new Point(obj.x_, obj.y_)));
+        }
+        for (GameObject obj : borning) objects.add(obj);
         dying.clear();
         borning.clear();
-        for(GameObject obj : objects) { obj.py.update(obj); obj.gr.update(obj, this); obj.in.update(obj, false); }
+        for (GameObject obj : objects) {
+            boolean clickInsideObject = (click != null && obj.x_ <= click.getX() && obj.x_ + obj.getWidth() >= click.getX() && obj.y_ <= click.getY() && obj.y_ + obj.getHeight() >= click.getY());
+            obj.py.update(obj);
+            obj.gr.update(obj, this);
+            obj.in.update(obj, clickInsideObject);
+        }
+        click = null;
         bufferStrategy.show();
     }
 
@@ -191,6 +246,9 @@ public class Game implements Runnable {
         dying.add(obj);
     }
     public void addObject(GameObject obj){ borning.add(obj); }
+
+    public Grid getGrid() { return grid; }
+    public Point getClick() { return click; }
 
     public static void main(String [] args){
         Game game = new Game();

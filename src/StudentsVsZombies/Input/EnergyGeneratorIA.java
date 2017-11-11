@@ -11,7 +11,7 @@ import java.awt.*;
 
 public class EnergyGeneratorIA extends Input {
     private Game game;
-    private int counterInterval = 300;
+    private int counterInterval = 1200;
     private int counter;
 
     public Input copy() { return new EnergyGeneratorIA(game); }

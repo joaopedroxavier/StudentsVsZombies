@@ -6,7 +6,7 @@ import java.util.Collections;
 import java.util.List;
 
 public class Grid {
-	private int x_, y_;
+	public int x_, y_;
 	private int cell_size;
 	private int M, N;
 	private ArrayList<Spawnable> grid[][];
@@ -36,6 +36,10 @@ public class Grid {
 	public Point get_limit() {
 		return new Point(N - 1, M - 1);
 	}
+
+	public int getWidth() { return get_limit().y * cell_size; }
+
+	public int getHeight() { return get_limit().x * cell_size; }
 
 	public List<Spawnable> getListOfObjects(Point cell) {
 		return Collections.unmodifiableList(grid[cell.y][cell.x]);

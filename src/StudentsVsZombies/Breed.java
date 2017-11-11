@@ -43,7 +43,7 @@ public class Breed {
 		}
     }
 
-    Spawnable spawn(Point cell, Grid grid){
+    public Spawnable spawn(Point cell, Grid grid){
        Spawnable monster = new Spawnable(grid, grid.get_loc(cell), new StateGraphics(sprites.get(0)), py.copy(), in.copy(), width, height, base_state.copy(), totalHp, this);
 
        return monster;
