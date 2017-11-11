@@ -47,6 +47,8 @@ public class Game implements Runnable {
     private BufferedImage bluePlantSprite = null;
     private BufferedImage sunflowerPlantSprite = null;
 
+    private GameObject gameOverBG = null;
+
 
     private int scale = 4;
     private int WIDTH = 144, HEIGHT = 112;
@@ -168,6 +170,8 @@ public class Game implements Runnable {
                 }catch(InterruptedException e){ /*Do nothing*/ }
             }
         }
+
+        gameOver();
     }
 
     private void construct_world(){
@@ -188,15 +192,24 @@ public class Game implements Runnable {
             StaticGraphics background = new StaticGraphics(bgImg);
             GameObject bg = new GameObject(new Point(0,0), background, new EmptyPhysics(), new EmptyInput(), 112*scale,144*scale);
             objects.add(bg);
+
+            File gameOverFile = new File("gfx/src/gameover.png");
+            BufferedImage gameOverImg = ImageIO.read(gameOverFile);
+            StaticGraphics gbg = new StaticGraphics(gameOverImg);
+            gameOverBG = new GameObject(new Point(0,0), gbg, new EmptyPhysics(), new EmptyInput(), 112*scale,144*scale);
+
             File greenPlantFile = new File("gfx/sheets/plant-greenx"+scale+".png");
             BufferedImage greenImg = ImageIO.read(greenPlantFile);
             greenPlantSprite = ((greenImg.getSubimage(0, 0, 16*scale, 16*scale)));
+
             File bluePlantFile = new File("gfx/sheets/plant-bluex"+scale+".png");
             BufferedImage blueImg = ImageIO.read(bluePlantFile);
             bluePlantSprite = ((blueImg.getSubimage(0, 0, 16*scale, 16*scale)));
+
             File sunflowerPlantFile = new File("gfx/sheets/sunflowerx"+scale+".png");
             BufferedImage sunImg = ImageIO.read(sunflowerPlantFile);
             sunflowerPlantSprite = ((sunImg.getSubimage(0, 0, 16*scale, 16*scale)));
+
         } catch (IOException e) { e.printStackTrace(); }
 
         // build list of animation sheets relative to the entities
@@ -289,6 +302,24 @@ public class Game implements Runnable {
 
     public Grid getGrid() { return grid; }
     public Point getClick() { return click; }
+
+    public void finish() { running = false; }
+
+    public void gameOver() {
+        objects.add(gameOverBG);
+
+        update();
+
+        objects.clear();
+        dying.clear();
+        borning.clear();
+
+        try {
+            Thread.sleep(1000);
+        } catch (Exception e) { e.printStackTrace(); }
+
+        running = false;
+    }
 
     public static void main(String [] args){
         Game game = new Game();

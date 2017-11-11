@@ -14,6 +14,7 @@ public abstract class Graphics {
     protected int update_counter = 0;
     protected ArrayList<BufferedImage> sprite_seq;
     protected int sprite_i = 0;
+    protected float alpha = 1;
 
     abstract public Graphics copy();
 
@@ -26,8 +27,12 @@ public abstract class Graphics {
         displayImage(game,sprite_seq.get(sprite_i), obj.x_, obj.y_);
     }
 
+    public void setAlpha(float alpha) { this.alpha = alpha; }
+
     protected void displayImage(Game game, BufferedImage img, int x, int y) { //prototype
         Graphics2D g = (Graphics2D) game.bufferStrategy.getDrawGraphics();
+        AlphaComposite ac = AlphaComposite.Clear.getInstance(AlphaComposite.SRC_OVER, alpha);
+        g.setComposite(ac);
         g.drawImage(img, x, y, game.panel);
         g.dispose();
     }
