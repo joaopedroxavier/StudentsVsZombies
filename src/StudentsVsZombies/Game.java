@@ -192,7 +192,7 @@ public class Game implements Runnable {
             GameObject bg = new GameObject(new Point(0,0), background, new EmptyPhysics(), new EmptyInput(), 112*scale,144*scale);
             objects.add(bg);
 
-            File gameOverFile = new File("gfx/src/gameover.png");
+            File gameOverFile = new File("gfx/src/LoseScreen.png");
             BufferedImage gameOverImg = ImageIO.read(gameOverFile);
             StaticGraphics gbg = new StaticGraphics(gameOverImg);
             gameOverBG = new GameObject(new Point(0,0), gbg, new EmptyPhysics(), new EmptyInput(), 112*scale,144*scale);
