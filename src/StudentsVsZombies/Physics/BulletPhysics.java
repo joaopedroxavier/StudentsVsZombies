@@ -28,6 +28,7 @@ public class BulletPhysics extends Physics {
                 if (element.getBreed() == game.zombie_breed) {
                     game.removeObject(o);
                     element.hp -= parentBreed.getAttack();
+                    break;
                 }
             }
         }

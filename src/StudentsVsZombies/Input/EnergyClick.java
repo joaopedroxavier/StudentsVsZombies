@@ -11,7 +11,6 @@ public class EnergyClick extends Input {
 
     public void update(GameObject obj, Boolean clicked){
         if(clicked) {
-            System.out.println("Gained energy!");
             game.gainEnergy();
             game.removeObject(obj);
         }

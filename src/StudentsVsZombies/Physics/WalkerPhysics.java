@@ -34,8 +34,7 @@ public class WalkerPhysics extends Physics {
             }
             if(o.x_ == 0) {
                 game.removeObject(o);
-                game.finish();
-                System.out.println("Game Over!!!"); //Trocar para chamar a função de Game Over!
+                game.lose();
             }
         }
     }

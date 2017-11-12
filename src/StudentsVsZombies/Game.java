@@ -1,5 +1,7 @@
 package StudentsVsZombies;
 
+import StudentsVsZombies.Graphics.EmptyGraphics;
+import StudentsVsZombies.Graphics.Graphics;
 import StudentsVsZombies.Input.*;
 import StudentsVsZombies.Physics.*;
 import StudentsVsZombies.State.Standing;
@@ -28,7 +30,7 @@ public class Game implements Runnable {
     private ArrayList<GameObject> borning;
     private Grid grid;
     private Point click;
-    public int energyAmount = 100;
+    public int energyAmount = 500;
     public Breed zombie_breed;
     public Breed green_breed;
     public Breed blue_breed;
@@ -41,6 +43,7 @@ public class Game implements Runnable {
     private Card blueCard;
     private Card greenCard;
     private Card holding;
+    private GameObject progressIntelligence;
 
     public BufferedImage[] numbers;
     private BufferedImage greenPlantSprite = null;
@@ -54,6 +57,7 @@ public class Game implements Runnable {
     private int WIDTH = 144, HEIGHT = 112;
     private int energyCounter = 0;
     private boolean running = true;
+    private boolean winner;
     private long desiredFPS = 60;
     private long desiredDeltaLoop = (1000*1000*1000)/desiredFPS;
     private JFrame frame;
@@ -93,7 +97,6 @@ public class Game implements Runnable {
     private class MouseControl extends MouseAdapter {
         public void mouseClicked(MouseEvent e) {
             click = new Point(e.getPoint());
-            System.out.println(click.x + " " + click.y);
         }
 
         public void mouseMoved(MouseEvent e) {
@@ -109,7 +112,6 @@ public class Game implements Runnable {
 
         public void mousePressed(MouseEvent e) {
             click = new Point(e.getPoint());
-            System.out.println(click.x + " " + click.y);
             for (GameObject obj : objects) {
                 boolean clickInsideObject = (click != null && obj.x_ <= click.getX() && obj.x_ + obj.getWidth() >= click.getX() && obj.y_ <= click.getY() && obj.y_ + obj.getHeight() >= click.getY());
                 if((obj instanceof Card) && clickInsideObject) {
@@ -118,7 +120,6 @@ public class Game implements Runnable {
                         holding = myCard.copy();
                         holding.gr = obj.gr.copy();
                         holding.gr.setAlpha((float) 0.5);
-                        System.out.println("Holding!!");
                     }
                 }
             }
@@ -126,12 +127,9 @@ public class Game implements Runnable {
 
         public void mouseReleased(MouseEvent e) {
             click = new Point(e.getPoint());
-            System.out.println(click.x + " " + click.y);
             boolean clickInsideObject = (click != null && grid.x_ <= click.getX() && grid.x_ + grid.getWidth() >= click.getX() && grid.y_ <= click.getY() && grid.y_ + grid.getHeight() >= click.getY());
             if(holding != null && clickInsideObject) {
 
-                System.out.println("Releasing!!");
-                System.out.println(grid.get_cell(click).x + " " + grid.get_cell(click).y);
                 Point cellClick = new Point(grid.get_cell(click).y, grid.get_cell(click).x);
 
                 Breed breed = holding.getBreed();
@@ -229,7 +227,7 @@ public class Game implements Runnable {
 
         green_breed = new Breed(100, 100, greens, scale, new PlantPhysics(), new PlantIA(this), new Standing());
         blue_breed = new Breed(100, 300, blues, scale, new PlantPhysics(), new PlantIA(this), new Standing());
-        zombie_breed = new Breed(700,10, zombies, scale, new WalkerPhysics(this), new WalkerIA(this), new Walking());
+        zombie_breed = new Breed(400,10, zombies, scale, new WalkerPhysics(this), new WalkerIA(this), new Walking());
         sunflower_breed = new Breed(100, 10, sunflower, scale, new PlantPhysics(), new EnergyGeneratorIA(this), new Standing());
 
         green_bulletPrototype = new Prototype("gfx/sheets/green-bulletx"+scale+".png", scale, new BulletPhysics(this, green_breed), new EmptyInput(), 50, 50); // colocar imagem da bullet x
@@ -240,6 +238,8 @@ public class Game implements Runnable {
         GameObject display2 = new GameObject(new Point(41 - (numbers[0].getWidth() + 3),72), new StaticGraphics(numbers[0]), new EmptyPhysics(), new EnergyDisplayIA(this, 2), numbers[0].getWidth(), numbers[0].getHeight());
         GameObject display3 = new GameObject(new Point(41 - 2*(numbers[0].getWidth() + 3),72), new StaticGraphics(numbers[0]), new EmptyPhysics(), new EnergyDisplayIA(this, 3), numbers[0].getWidth(), numbers[0].getHeight());
 
+        progressIntelligence = new GameObject(new Point(0, 0), new EmptyGraphics(), new EmptyPhysics(), new ProgressIA(this), 0, 0);
+
         try {
             sunCard = new Card(sunflower_breed, new GameObject(new Point(63, 0), new StaticGraphics(sunflowerPlantSprite), new EmptyPhysics(), new CardClick(this), sunflowerPlantSprite.getWidth(), sunflowerPlantSprite.getHeight()),50);
             greenCard = new Card(green_breed, new GameObject(new Point(63 + (sunflowerPlantSprite.getWidth() - 1),0), new StaticGraphics(greenPlantSprite), new EmptyPhysics(), new CardClick(this), greenPlantSprite.getWidth(), greenPlantSprite.getHeight()), 100);
@@ -248,7 +248,6 @@ public class Game implements Runnable {
 
         //GameObject zero = new GameObject(new Point(0,0), new StaticGraphics(numbers[0]), new PlantPhysics(), new Idle() , 5*scale, 3*scale);
         //objects.add(zero);
-        objects.add(zombie_breed.spawn(new Point (1,8), grid));
         //objects.add(bulletPrototype.create(new Point(200, 200))); // sun and bullet creation example
         objects.add(display1);
         objects.add(display2);
@@ -263,7 +262,7 @@ public class Game implements Runnable {
     }
 
     public void gainEnergy() {
-        energyAmount += 20;
+        energyAmount += 25;
     }
 
     private void update() {
@@ -289,6 +288,7 @@ public class Game implements Runnable {
             obj.in.update(obj, clickInsideObject);
         }
 
+        progressIntelligence.in.update(progressIntelligence, false);
         if(holding != null) holding.gr.update(holding, this);
 
         click = null;
@@ -303,7 +303,8 @@ public class Game implements Runnable {
     public Grid getGrid() { return grid; }
     public Point getClick() { return click; }
 
-    public void finish() { running = false; }
+    public void lose() { running = false; winner = false;}
+    public void win() { running = false; winner = true;}
 
     public void gameOver() {
         objects.add(gameOverBG);

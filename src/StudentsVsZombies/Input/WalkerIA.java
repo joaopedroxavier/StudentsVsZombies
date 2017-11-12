@@ -13,7 +13,7 @@ import StudentsVsZombies.State.Walking;
 public class WalkerIA extends Input {
     private Game game;
     private int eatCounter = 0;
-    private double eatSpeed = 0.05;
+    private double eatSpeed = 0.02;
 
     public WalkerIA copy(){ return new WalkerIA(game); }
 
@@ -24,8 +24,6 @@ public class WalkerIA extends Input {
     public void update(GameObject o, Boolean clicked) {
         Spawnable obj = (Spawnable) o;
         State currentState = obj.state;
-
-        if(clicked) { System.out.println("Clicked a zombie!"); }
 
         if(obj.hp <= 0) { currentState.die(obj, game); }
 
