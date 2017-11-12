@@ -51,6 +51,7 @@ public class Game implements Runnable {
     private BufferedImage sunflowerPlantSprite = null;
 
     private GameObject gameOverBG = null;
+    private GameObject winnerBG = null;
 
 
     private int scale = 4;
@@ -196,6 +197,11 @@ public class Game implements Runnable {
             StaticGraphics gbg = new StaticGraphics(gameOverImg);
             gameOverBG = new GameObject(new Point(0,0), gbg, new EmptyPhysics(), new EmptyInput(), 112*scale,144*scale);
 
+            File winScreenFile = new File("gfx/src/WinScreen.png");
+            BufferedImage winScreenImg = ImageIO.read(winScreenFile);
+            StaticGraphics wbg = new StaticGraphics(winScreenImg);
+            winnerBG = new GameObject(new Point(0,0), wbg, new EmptyPhysics(), new EmptyInput(), 112*scale,144*scale);
+
             File greenPlantFile = new File("gfx/sheets/plant-greenx"+scale+".png");
             BufferedImage greenImg = ImageIO.read(greenPlantFile);
             greenPlantSprite = ((greenImg.getSubimage(0, 0, 16*scale, 16*scale)));
@@ -307,7 +313,8 @@ public class Game implements Runnable {
     public void win() { running = false; winner = true;}
 
     public void gameOver() {
-        objects.add(gameOverBG);
+        if(winner) objects.add(winnerBG);
+        else objects.add(gameOverBG);
 
         update();
 
